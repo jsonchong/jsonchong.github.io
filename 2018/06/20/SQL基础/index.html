@@ -79,23 +79,21 @@
 
 
 
-<meta name="description" content="IP 网际协议IP 协议位于网络层，它是 TCP/IP 协议族中最为核心的协议，所有的 TCP、UDP、ICMP 及 IGMP 数据都以 IP 数据报格式传输。IP 协议提供的是 不可靠 、 无连接 的数据报传送服务。  不可靠（unreliable）:IP 协议不能保证数据报能成功地到达目的地，它仅提供传输服务。当发生某种错误时，IP 协议会丢弃该数据报。传输的可靠性全由上层协议来提供  无连接">
+<meta name="description" content="SQL简介SQL在软件开发方面有诸多应用,学习一个东西之前我们得先知道我们学习的目的，所以我们学习SQL的目的是什么呢？做一名Developer还是DBA? 还是作为数据分析的工具？anyway,明确自己的学习目的就好，不过这里主要以用SQL在数据分析领域中的应用为目的。数据分析？，那么数据分析的目的又是什么呢，或者说分析后能给我带来什么呢？现今，很多公司企业都拥有着大量的数据(数据即财富)，他们">
 <meta name="keywords" content="code article social">
 <meta property="og:type" content="article">
-<meta property="og:title" content="IP网际协议">
-<meta property="og:url" content="http://yoursite.com/2018/05/27/TCP:ip详解-IP网际协议/index.html">
+<meta property="og:title" content="SQL基础">
+<meta property="og:url" content="http://yoursite.com/2018/06/20/SQL基础/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="IP 网际协议IP 协议位于网络层，它是 TCP/IP 协议族中最为核心的协议，所有的 TCP、UDP、ICMP 及 IGMP 数据都以 IP 数据报格式传输。IP 协议提供的是 不可靠 、 无连接 的数据报传送服务。  不可靠（unreliable）:IP 协议不能保证数据报能成功地到达目的地，它仅提供传输服务。当发生某种错误时，IP 协议会丢弃该数据报。传输的可靠性全由上层协议来提供  无连接">
+<meta property="og:description" content="SQL简介SQL在软件开发方面有诸多应用,学习一个东西之前我们得先知道我们学习的目的，所以我们学习SQL的目的是什么呢？做一名Developer还是DBA? 还是作为数据分析的工具？anyway,明确自己的学习目的就好，不过这里主要以用SQL在数据分析领域中的应用为目的。数据分析？，那么数据分析的目的又是什么呢，或者说分析后能给我带来什么呢？现今，很多公司企业都拥有着大量的数据(数据即财富)，他们">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://akaedu.github.io/book/images/tcpip.ipformat.png">
-<meta property="og:image" content="http://bmob-cdn-3365.b0.upaiyun.com/2016/07/15/ab5230bd40940c40802394de7cdf8365.png">
-<meta property="og:image" content="https://img-blog.csdn.net/20140422141814703?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3VzZXl1a3Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:image" content="https://img-blog.csdn.net/20140422141835328?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3VzZXl1a3Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
-<meta property="og:updated_time" content="2018-05-27T08:53:41.000Z">
+<meta property="og:image" content="http://yoursite.com/Users/qianqiangongzhu/Downloads/WX20180717-231228@2x.png">
+<meta property="og:image" content="http://yoursite.com/Users/qianqiangongzhu/Downloads/WX20180717-235444@2x.png">
+<meta property="og:updated_time" content="2018-07-17T15:56:44.050Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="IP网际协议">
-<meta name="twitter:description" content="IP 网际协议IP 协议位于网络层，它是 TCP/IP 协议族中最为核心的协议，所有的 TCP、UDP、ICMP 及 IGMP 数据都以 IP 数据报格式传输。IP 协议提供的是 不可靠 、 无连接 的数据报传送服务。  不可靠（unreliable）:IP 协议不能保证数据报能成功地到达目的地，它仅提供传输服务。当发生某种错误时，IP 协议会丢弃该数据报。传输的可靠性全由上层协议来提供  无连接">
-<meta name="twitter:image" content="https://akaedu.github.io/book/images/tcpip.ipformat.png">
+<meta name="twitter:title" content="SQL基础">
+<meta name="twitter:description" content="SQL简介SQL在软件开发方面有诸多应用,学习一个东西之前我们得先知道我们学习的目的，所以我们学习SQL的目的是什么呢？做一名Developer还是DBA? 还是作为数据分析的工具？anyway,明确自己的学习目的就好，不过这里主要以用SQL在数据分析领域中的应用为目的。数据分析？，那么数据分析的目的又是什么呢，或者说分析后能给我带来什么呢？现今，很多公司企业都拥有着大量的数据(数据即财富)，他们">
+<meta name="twitter:image" content="http://yoursite.com/Users/qianqiangongzhu/Downloads/WX20180717-231228@2x.png">
 
 
 
@@ -125,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/05/27/TCP:ip详解-IP网际协议/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/20/SQL基础/"/>
 
 
 
 
 
-  <title>IP网际协议 | Hello World</title>
+  <title>SQL基础 | Hello World</title>
   
 
 
@@ -258,7 +256,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/27/TCP:ip详解-IP网际协议/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/20/SQL基础/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jason chong">
@@ -275,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">IP网际协议</h1>
+          <h1 class="post-title" itemprop="name headline">SQL基础</h1>
         
 
         <div class="post-meta">
@@ -287,8 +285,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-27T16:53:41+08:00">
-                2018-05-27
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-20T18:59:15+08:00">
+                2018-06-20
               </time>
             
 
@@ -310,8 +308,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/网络相关/" itemprop="url" rel="index">
-                    <span itemprop="name">网络相关</span>
+                  <a href="/categories/Data-Analysis/" itemprop="url" rel="index">
+                    <span itemprop="name">-Data Analysis</span>
                   </a>
                 </span>
 
@@ -347,59 +345,30 @@
       
 
       
-        <h2 id="IP-网际协议"><a href="#IP-网际协议" class="headerlink" title="IP 网际协议"></a>IP 网际协议</h2><p>IP 协议位于网络层，它是 TCP/IP 协议族中最为核心的协议，所有的 TCP、UDP、ICMP 及 IGMP 数据都以 IP 数据报格式传输。IP 协议提供的是 不可靠 、 无连接 的数据报传送服务。</p>
+        <h3 id="SQL简介"><a href="#SQL简介" class="headerlink" title="SQL简介"></a>SQL简介</h3><p>SQL在软件开发方面有诸多应用,学习一个东西之前我们得先知道我们学习的目的，所以我们学习SQL的目的是什么呢？做一名Developer还是DBA? 还是作为数据分析的工具？anyway,明确自己的学习目的就好，不过这里主要以用SQL在数据分析领域中的应用为目的。数据分析？，那么数据分析的目的又是什么呢，或者说分析后能给我带来什么呢？<br>现今，很多公司企业都拥有着大量的数据(数据即财富)，他们希望各部门的职员都能有条不紊地利用这些数据 进行决策，如何做到呢，绝大多数数据分析师会告诉你大部分工作都是在SQL中完成的，so let‘s get start!</p>
+<h3 id="为什么使用SQL"><a href="#为什么使用SQL" class="headerlink" title="为什么使用SQL"></a>为什么使用SQL</h3><h4 id="为什么企业喜欢使用数据库"><a href="#为什么企业喜欢使用数据库" class="headerlink" title="为什么企业喜欢使用数据库"></a>为什么企业喜欢使用数据库</h4><p><strong>可以快速访问数据</strong>-SQL 可使我们从数据库中快速获取结果。 可以优化代码，快速获取结果</p>
+<p><strong>可以很容易共享数据</strong> - 多个人可以访问存储在数据库中的数据，所有访问数据库的用户获得的数据都是一样。</p>
+<h4 id="数据库如何存储数据"><a href="#数据库如何存储数据" class="headerlink" title="数据库如何存储数据"></a>数据库如何存储数据</h4><p>如果你用过Excel你应该已经很熟悉表了 他们和数据表很像，表具有行和列 就像Excel,但是有些更严格的规范，比如数据表每列必须有独一无二的列名 如下图<br><img src="/Users/qianqiangongzhu/Downloads/WX20180717-231228@2x.png" alt=""><br>看上去数据库并不知道每个列的列名指代的是什么，所以我们需要尽可能的让我们的列名更具描述性，如name表示名字，age表示年龄等等</p>
+<p>总结下来，SQL数据库中存储数据有以下特点:</p>
 <ul>
-<li><p>不可靠（unreliable）:IP 协议不能保证数据报能成功地到达目的地，它仅提供传输服务。当发生某种错误时，IP 协议会丢弃该数据报。传输的可靠性全由上层协议来提供</p>
+<li><strong>数据库中的数据存储在类似于 Excel 电子表格的表中</strong>。<br>大多数情况下，可以将数据库视为一堆 Excel 电子表格。每个电子表格都有行和列。每行保存有关交易、个人、公司等的数据。而每列所保存的数据与你关心的某一特定行相关，如名称、位置、唯一身份等。</li>
+</ul>
+<ul>
+<li><p><strong>同一列中的所有数据必须符合数据类型。</strong><br>如果其中一列存储的是数字，如年龄，那么这一列就应该严格遵守数字这种数据类型，不能是文本或是其他类型的数据</p>
 </li>
-<li><p>无连接 : IP 协议对每个数据报的处理是相互独立的。这也说明， IP 数据报可以不按发送顺序接收。如果发送方向接收方发送了两个连续的数据报（先是 A，然后是 B），每个数据报可以选择不同的路线，因此 B 可能在 A 到达之前先到达</p>
+<li><p><strong>列类型一致是快速使用数据库的主要原因之一。</strong><br>数据库通常会存储海量数据。因此，知道这些列都是相同类型的数据意味着可快速从数据库获取数据。</p>
 </li>
 </ul>
-<h3 id="IP-数据报"><a href="#IP-数据报" class="headerlink" title="IP 数据报"></a>IP 数据报</h3><p>首先看一下 IP 数据报的格式，其中没有一个字段是多余的，学习 IP 协议就应从学习它的报文字段意义和作用开始。</p>
-<p><img src="https://akaedu.github.io/book/images/tcpip.ipformat.png" alt=""></p>
-<p>如上图所示，普通的 IP 数据报的报头长度 20 字节(除非有选项字段)，各个部分的作用</p>
-<ul>
-<li>版本号：4位，用于标明IP版本号，0100表示IPv4,0110表示IPv6</li>
-<li>首部长度：4位，表示IP报头长度</li>
-<li>服务类型(TOS):分别有最小时延，最大吞吐量，最高可靠性，最小花费4中服务，4个标识位只能有一个被置为1</li>
-<li>总长度：16位，报头长度加上数据部分的长度，便是数据报的总长度，IP数据报最长可达65535个字节</li>
-<li>标识：16位。接收方根据分片中的标识字段相不相同来判断这些分片是不是同一个数据报的分片，从而进行分片的重组。通常每发送一次报文它的值会加1</li>
-<li>标志：3位，用于标识数据报是否分片，其中第二位是不分段(DF)位，当DF位被置为1时，则不对数据报进行分段处理</li>
-<li>偏移：13位，在接收方进行数据报重组时用来标识分片的顺序。</li>
-<li>生存时间(TTL):8 位，用于设置数据报可以经过的最多的路由器个数。TTL 的初始值由源主机设置（通常为 32 或 64），每经过一个处理它的路由器，TTL 值减 1。如果一个数据报的 TTL 值被减至 0，它将被丢弃</li>
-<li>协议：8位，通常标识是哪个协议向IP传送数据。ICMP为1，IGMP为2，TCP为6，UDP为17，GRE为47，ESP为50</li>
-<li>首部校验和：根据IP首部计算的校验和码</li>
-<li>源IP和目的IP:数据报头还会包含该数据报的发送方IP和接受方IP</li>
-<li>选项：是数据报中的一个可变长，可选的信息，不常用，多用于安全，军事领域</li>
-</ul>
-<h3 id="IP-地址分类"><a href="#IP-地址分类" class="headerlink" title="IP 地址分类"></a>IP 地址分类</h3><p>为了便于寻址以及层次化构造网络，每个 IP 地址可被看作是分为两部分，即 <strong>网络号</strong> 和 <strong>主机号</strong> 。同一个区域的所有主机有相同的网络号(即 IP 地址的前半部分相同)，区域内的每个主机（包括路由器）都有一个主机号与其对应。</p>
-<p>IP 地址被分为 A,B,C,D,E 五类，其中 A 类给大型网络或政府机构等，B 类分配给中型网络、跨国企业等，C 类分配给小型网络，D 类用于多播，E 类用于实验，各类可容纳的地址数目不同。其中我们最常见的为 A,B,C 这三类。</p>
-<p>IP 地址用 32 位二进制数字表示的时候，A,B,C 类 IP 的网络号长度分别为 8 位、16 位、24 位：</p>
-<p><img src="http://bmob-cdn-3365.b0.upaiyun.com/2016/07/15/ab5230bd40940c40802394de7cdf8365.png" alt=""></p>
-<h3 id="子网划分"><a href="#子网划分" class="headerlink" title="子网划分"></a>子网划分</h3><p>IP 地址如果只使用 ABCDE 类来划分，会造成大量的浪费：一个有 500 台主机的网络，无法使用 C 类地址。但如果使用一个 B 类地址，6 万多个主机地址只有 500 个被使用，造成 IP 地址的大量浪费。</p>
-<p>因此，可以在 ABC 类网络的基础上，进一步划分子网：<strong>占用主机号的前几个位，用于表示子网号</strong> 。</p>
-<p>这样 IP 地址就可看作 IP = 网络号 + 子网号 + 主机号</p>
-<p>子网号的位数没有硬性规定，于是我们用 子网掩码 来确定一个 IP 地址中哪几位是主机号，具体使用方法如图：</p>
-<p>根据子网ID借用的主机位数，我们可以计算出划分的子网数、掩码、每个子网主机数，列表如下：</p>
-<p><img src="https://img-blog.csdn.net/20140422141814703?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3VzZXl1a3Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<p><img src="https://img-blog.csdn.net/20140422141835328?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvd3VzZXl1a3Vp/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
-<h3 id="IP-路由选择"><a href="#IP-路由选择" class="headerlink" title="IP 路由选择"></a>IP 路由选择</h3><p>发送方与接收方通过若干个路由器(router)连接，那么数据报就需要经过若干个路由器的转发才能送达，它是怎么选择一个合适的路径来”送货”的呢？</p>
-<p>IP 层在内存中有一个路由表（输入命令 route -n 可以查看路由表），当收到一份数据报并进行发送时，都要对该表进行搜索：</p>
-<ul>
-<li><p>1、搜索路由表，如果能找到和目的 IP 地址完全一致的主机，则将 IP 数据报发向该主机；</p>
-</li>
-<li><p>2、搜索路由表，如果匹配主机失败，则匹配同子网的路由器(这需要子网掩码的协助)。如果找到路由器，则将 IP 该数据报发向该路由器；</p>
-</li>
-<li><p>3、搜索路由表，如果匹配同子网路由器失败，则匹配同网络号路由器，如果找到路由器，则将该 IP 数据报发向该路由器；</p>
-</li>
-<li><p>4、如果以上都失败了，就搜索默认路由，如果默认路由存在，则发报；</p>
-</li>
-<li><p>6、如果都失败了，就丢掉这个包；</p>
-</li>
-<li><p>7、接收到数据报的路由器再按照它自己的路由表继续转发，直到数据报被转发到目的主机；</p>
-</li>
-<li><p>8、如果在转发过程中，IP 数据报的 TTL（生命周期）已经被减为 0，则该 IP 数据报就被抛弃</p>
-</li>
-</ul>
+<h3 id="SQL语句"><a href="#SQL语句" class="headerlink" title="SQL语句"></a>SQL语句</h3><p>说了半天，简单介绍了SQL是什么，那么接下来我们需要知道如何使用SQL,简单来说，SQL就是一门服务我们获取数据的工具，使用这个工具并不复杂，就像学会开车并不复杂，复杂的是车的构造(所以SQL的构造原理也非常复杂，还好我们不用关心)，我们只需要照着”说明书”来使用SQL这个强大的工具吧。<br>我们来看”说明书”的第一点：<strong>SQL语句</strong></p>
+<p>可以把语句理解为撰写正确的SQL代码，千万别被代码这两个字吓跑了，其实很简单，有多简单，就跟你说话一样简单(如果你有点英文基础就更好理解了) 语句会告诉数据库你想对数据库进行什么操作 以<code>CREATE</code><br>开头的语句为例，该语句能让你在数据库中创建表;<code>DROP TABLE</code>语句则能让你从数据库中删除表，本文重点介绍查询数据的语句 <code>SELECT</code> ,为什么是<code>SELECT</code>,很简单，因为使用频繁，频繁，最频繁，闲着没事你肯定不会去删除表(如果你删了，那么恭喜你也被公司删了)^_^</p>
+<p>好了开始我们第一个语句吧:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span>,age,sex,company <span class="keyword">FROM</span> <span class="keyword">USER</span></span><br></pre></td></tr></table></figure>
+<p>我们来分析一下吧，刚才说过了，<code>SELECT</code>表示查询 紧随其后的是你需要查询什么呢，name(名字),age(年龄),sex(性别)… 以逗号分隔你所需要的不同数据列，<code>FROM</code> 顾名思义，表示我从哪个数据表去查询呢，<code>FROM USER</code>表示从名为USER的数据表去查询数据。So Easy！是不是跟说话一样简单? 学好SQL的语法加之熟练，那么你很快就能将SQL为之所用了！</p>
+<h3 id="LIMIT"><a href="#LIMIT" class="headerlink" title="LIMIT"></a>LIMIT</h3><p>我们已经学习了 <code>SELECT</code>（选择列）和 <code>FROM</code>（选择表）语句。如果想要查看表的前几行时，LIMIT 语句就能派上用场。这可比加载整个数据集要快得多。</p>
+<p>许多时候，查询的目的只是要看看某个表是什么样的，大概有什么字段(数据列),想对字段进行什么操作，比如你想看看google的网站流量，第一步你需要弄清网站流量表里存储了什么数据，要做到这一点你只需要看几行数据就可以了，使用<code>LIMIT</code>子句就能轻易地缩短查询结果的返回时间，毕竟当数据量非常庞大时，一次性就像全部查询出来也是很耗费时间的，让我们用<code>LIMIT</code>来看网站流量表的前十行,把LIMIT写在查询的最后，后面加上数字，这样就限制了返回的行数，比如<code>LIMIT 10</code>就会使查询只返回前十行结果，省略其它</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> web_events_full <span class="keyword">LIMIT</span> <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>下图即为网站流量表的查询结果</p>
+<p><img src="/Users/qianqiangongzhu/Downloads/WX20180717-235444@2x.png" alt=""></p>
 
       
     </div>
@@ -424,8 +393,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/27/TCP:ip详解-基本概念/" rel="next" title="TCP/IP基本概念">
-                <i class="fa fa-chevron-left"></i> TCP/IP基本概念
+              <a href="/2018/06/20/Android卡顿监控方案/" rel="next" title="Android卡顿监控方案">
+                <i class="fa fa-chevron-left"></i> Android卡顿监控方案
               </a>
             
           </div>
@@ -434,8 +403,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/05/27/TCP:ip详解-传输层TCP协议/" rel="prev" title="TCP协议">
-                TCP协议 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/07/05/移动端h5首屏秒开方案/" rel="prev" title="移动端h5首屏秒开方案">
+                移动端h5首屏秒开方案 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -563,7 +532,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP-网际协议"><span class="nav-number">1.</span> <span class="nav-text">IP 网际协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#IP-数据报"><span class="nav-number">1.1.</span> <span class="nav-text">IP 数据报</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IP-地址分类"><span class="nav-number">1.2.</span> <span class="nav-text">IP 地址分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子网划分"><span class="nav-number">1.3.</span> <span class="nav-text">子网划分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IP-路由选择"><span class="nav-number">1.4.</span> <span class="nav-text">IP 路由选择</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL简介"><span class="nav-number">1.</span> <span class="nav-text">SQL简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么使用SQL"><span class="nav-number">2.</span> <span class="nav-text">为什么使用SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么企业喜欢使用数据库"><span class="nav-number">2.1.</span> <span class="nav-text">为什么企业喜欢使用数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库如何存储数据"><span class="nav-number">2.2.</span> <span class="nav-text">数据库如何存储数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL语句"><span class="nav-number">3.</span> <span class="nav-text">SQL语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LIMIT"><span class="nav-number">4.</span> <span class="nav-text">LIMIT</span></a></li></ol></div>
             
 
           </div>
