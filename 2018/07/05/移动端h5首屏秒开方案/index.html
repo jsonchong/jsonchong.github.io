@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="传统页面的动静分离所有的技术选型与框架都是要结合业务形态来选择，大家对QQ会员的业务形态可能有简单的了解。手机QQ中可以说有大概70%以上的业务由H5开发，像会员的主要商城：游戏分发中心、会员特权中心和我现在负责的个性化业务的商城等等。这些商城特点很明显，它们不是UGC生成的页面，是产品经理在后台配置的内容，比如在页面上可以看到的表情和主题等等。 这些页面相对传统，在最初的时候，一个传统的H5页面">
+<meta name="keywords" content="code article social">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动端h5首屏秒开方案">
+<meta property="og:url" content="http://yoursite.com/2018/07/05/移动端h5首屏秒开方案/index.html">
+<meta property="og:site_name" content="Hello World">
+<meta property="og:description" content="传统页面的动静分离所有的技术选型与框架都是要结合业务形态来选择，大家对QQ会员的业务形态可能有简单的了解。手机QQ中可以说有大概70%以上的业务由H5开发，像会员的主要商城：游戏分发中心、会员特权中心和我现在负责的个性化业务的商城等等。这些商城特点很明显，它们不是UGC生成的页面，是产品经理在后台配置的内容，比如在页面上可以看到的表情和主题等等。 这些页面相对传统，在最初的时候，一个传统的H5页面">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoVY37nia6ZoGrtgKXM5FjOxqRLZ9aMqjbyJxYlV7rkjg6htzzxxVicjRw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYofGsxOlFkD7R8DEMSUlbZicE8AT2JicibxdLviayZRsL95Edx9gbag1zgKw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoZiaU1DMZ35HNuxicEdBYJx9Ctzo2Ld2ojGH5lbYR0dJFOdcibyysjxGgg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoPOL4uJCgPDvw5EwAodHiaJ7J943Rfw97ztooDich1fYEsWCfYFJicou2Q/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYozlj2uJFib4SXx3Qr0GAvwclw2HbnsW5Y70L5uck7VnByFqgaeibeYAjw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYokJvODDibLFLJ7IScKz4nlEwHhiaB2kNabfIcudgXicm0qJcEEWzSQS0gQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYo6tguI8gtC90hbf8R6kBJWJ5cf7bR6eamTgQTxKkV1ibt6nPiacc2pAUg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoLfCSWemroiaNz4GxY8RMx7NINjRvqHoTEWI6gZPAmNf1cKHtS8A0oSw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYonFNzJAGW7tFeHvibPCj9owgGVJ725C7x8OCSrxZicsXspUP8bscW6icDg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoqYffNEj9XNmmiafQibEhkwTq7xLl7YlyC7QU6oNeF9sJQFQn9y78A8ibg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoh9bfZT8VyWCXVZUAwzpfeicTbNH59SIlTmbjKoI2NkdhwicuLASxD9qw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYod1WNOMUm8GJ62T8sYJicRWSlbkeG6dJYgQAFWH1zHEeFicpaoF174ibLQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYo10rytCzPLZXoSu4D2G2ibFKiaYVE3mzSOKxpkh1BXzicdBvULcbh6GQrw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYo8kG3NT2tVAdJ5Eicflib2GtIkmwxoJwO5qWOqLrdiboQa3EMqXYPFqOnQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYo3VicCW6FCETL7CutBaCNBUib6ia0M9U1OCRGuvjazLFyP7pV1n9geQc0Q/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoXkonC9W7YpGhIZY8picMUhdM6ibyl6cvEsh7n7BWMic0wLVGKdM0Mo5bw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoeRLmlltrMMGkmENlBWyFQxMuSYPXoqIJZRWM0dSk0KicSEtIoTRjLLg/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYovEHEdGKyNHfyBDrJmAJvnYXybPNOkOiacVjKvZCkOsyplMjmk06NzSQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoc6aYz1uGJyxiakzywhjoK5zJ7FGn9qGDtpyxuPibCAxCEaIdiaXz4lLSQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoVSQ0zNy1JqJqUW37QYOJSoX7uxWT9kee58MDNJ3RDz7UKBLsn2rKCQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYopYOU2YfEj2pL5GbrrsQnGAP0PsqSrate5ZHEfJMCLU2hm8Q5JlKbYQ/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:updated_time" content="2018-07-05T04:03:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="移动端h5首屏秒开方案">
+<meta name="twitter:description" content="传统页面的动静分离所有的技术选型与框架都是要结合业务形态来选择，大家对QQ会员的业务形态可能有简单的了解。手机QQ中可以说有大概70%以上的业务由H5开发，像会员的主要商城：游戏分发中心、会员特权中心和我现在负责的个性化业务的商城等等。这些商城特点很明显，它们不是UGC生成的页面，是产品经理在后台配置的内容，比如在页面上可以看到的表情和主题等等。 这些页面相对传统，在最初的时候，一个传统的H5页面">
+<meta name="twitter:image" content="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoVY37nia6ZoGrtgKXM5FjOxqRLZ9aMqjbyJxYlV7rkjg6htzzxxVicjRw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/05/移动端h5首屏秒开方案/"/>
+
+
+
+
+
+  <title>移动端h5首屏秒开方案 | Hello World</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/05/移动端h5首屏秒开方案/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jason chong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.saifurrahman.com/wp-content/uploads/2016/04/HelloWorld.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">移动端h5首屏秒开方案</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-05T12:03:58+08:00">
+                2018-07-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/移动端/" itemprop="url" rel="index">
+                    <span itemprop="name">-移动端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="传统页面的动静分离"><a href="#传统页面的动静分离" class="headerlink" title="传统页面的动静分离"></a>传统页面的动静分离</h3><p>所有的技术选型与框架都是要结合业务形态来选择，大家对QQ会员的业务形态可能有简单的了解。手机QQ中可以说有大概70%以上的业务由H5开发，像会员的主要商城：游戏分发中心、会员特权中心和我现在负责的个性化业务的商城等等。这些商城特点很明显，它们不是UGC生成的页面，是产品经理在后台配置的内容，比如在页面上可以看到的表情和主题等等。</p>
+<p>这些页面相对传统，在最初的时候，一个传统的H5页面为了提升速度和体验会做一些动静分离的优化，比如页面顶部的banner以及下面我们称作为item的物品区域，这些区域的数据可以由产品经理自由编辑随时更换，我们会通过页面loading之后发起CGI请求，从dataServer获取数据，然后再拼接起来。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoVY37nia6ZoGrtgKXM5FjOxqRLZ9aMqjbyJxYlV7rkjg6htzzxxVicjRw/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>这里的流程大概如下，用户从click开始，到launch WebView，WebView去加载CDN上的HTML文件，页面loading起来后才会去获取JSON，为了加速这个过程可能会用到localStroage做缓存，这整个过程是非常传统的静态页面加载过程，相对比较简单。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYofGsxOlFkD7R8DEMSUlbZicE8AT2JicibxdLviayZRsL95Edx9gbag1zgKw/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>但上述方案有一些问题，比如我们在launch WebView的时候网络处于空等状态，这会浪费时间。我们团队内部统计了Android机器launch WebView大概需要1秒以内（因为手机QQ是多进程的架构，WebView生存在另一个进程内部，launch一次WebView除了进程loading还有浏览器内核的加载）。</p>
+<p>其次，发布在CDN上的静态页面内部不包含item数据，所以用户第一眼看到从CDN下载的页面，里面的banner区域和item区域处于一片空白，这对用户体验也是很大的伤害。</p>
+<p>还有一个问题，页面loading起来要refresh当前的DOM，即拉取JSON之后拼接DOM结构再refresh，我们发现在一些QQ用户所使用的低端Android机器里，这个执行也会非常消耗时间。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoZiaU1DMZ35HNuxicEdBYJx9Ctzo2Ld2ojGH5lbYR0dJFOdcibyysjxGgg/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<h3 id="静态直出-离线预推"><a href="#静态直出-离线预推" class="headerlink" title="静态直出+离线预推"></a>静态直出+离线预推</h3><p>面对这些问题我们大胆采取了一些技术手段，我们称之为静态直出+离线预推的模式。首先我们把WebView的加载和网络请求做了并行，我们所有的网络请求并不是从WebView内核发起request，而是loading WebView的过程中，我们通过native的渠道建立自己的HTTP链接，然后从CDN和我们称作offlineServer的地方获取页面，这个offlineServer也就是大家听说过的离线包缓存策略。</p>
+<p>我们在native会有offlineCache，发起HTTP请求的时候首先检查offlineCache里有没有当前HTML缓存，这个缓存和WebView的缓存是隔离的，不会受到WebView的缓存策略影响，完全由我们自控。</p>
+<p>如果offlineCache没有缓存才会去offlineServer去同步文件，同时也会去从CDN去下载更新。我们在CDN上存储的HTML已经把banner和item等所有的数据打在静态页面里，这个时候WebView只要拿到HTML就不需要再做refresh和执行任何JS，整个页面可以直接展示出来，用户也可以进行交互。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoPOL4uJCgPDvw5EwAodHiaJ7J943Rfw97ztooDich1fYEsWCfYFJicou2Q/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>这个方案首先会节省WebView launch的时间，这段时间可以直接网络传输，另外如果本地有offlineCache甚至也不需要网络传输请求，相当于完全加载一个本地页面。但很多时候我们为了保险起见，还是加了页面loading，然后做refresh的操作防止数据的不一致性。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYozlj2uJFib4SXx3Qr0GAvwclw2HbnsW5Y70L5uck7VnByFqgaeibeYAjw/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>这套机制上线后效果不错，但真的去实施这种H5加载模式会遇到一些坑，例如产品经理配置的banner图片和item数据可能会存在多份数据版本不一致的情况。</p>
+<p>产品经理肯定是在dataServer上配置最新数据信息，但CDN上的页面内置的数据有可能仍处于上一版本，更差的情况是离线包服务器和offlineServer生成的HTML又是另外一个版本。当用户本地的缓存和server同步不及时即常见的缓存刷新问题，很有可能存储的数据又是另外一份。</p>
+<h4 id="如何统一数据"><a href="#如何统一数据" class="headerlink" title="如何统一数据"></a>如何统一数据</h4><p>如何快速把四个版本的数据全部统一？我们针对静态直出这种模式做了小型的自动构建系统，产品经理在管理端配置数据要同步dataServer时，我们会立刻启动我们内部称为vnues的构建系统。</p>
+<p>这套系统是基于Node.js搭建的，会把开发所编写的代码文件和UI素材图片等等数据实时生成最新版本的HTML，然后发布到CDN以及同步到offlineServer上，这可以解决CDN的文件与最新数据不一致的问题。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYokJvODDibLFLJ7IScKz4nlEwHhiaB2kNabfIcudgXicm0qJcEEWzSQS0gQ/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>但离线包缓存是放在用户手机上的，我们如何最快速地把用户手机上的离线缓存也更新起来？大家可能会这么做：QQ客户端每次登录上来把offlineServer最新文件下载回来就好了，但这个方案会遇到巨大的流量挑战。</p>
+<p>QQ现在每天的活跃用户好几亿，登录峰值差不多十几万每秒，即使一个100KB离线包的更新，发布一次动辄就需要几百GB的带宽，无论从成本还是技术层面都不是我们能接受的事情。</p>
+<p>我们offlineServer内部分为流控和offline计算两部分。当一个页面的所有资源需要进行离线包计算打包的时候，offline计算这部分除了把所有的资源打包，内部也会存储之前所有的历史版本，同时根据历史版本和最新版本生成所有的diff，即每个离线包的差样部分。</p>
+<p>这个方案也是根据我们业务形态而定的，因为每次产品经理更新的页面数据并不会太多，基本是几KB到10+KB的范围，所以我们没有必要每次离线包的更新都让用户去下载全量的包。</p>
+<p>当QQ用户登录后，每次都会询问offline流控server看有没有最新的包可以下载，如果当前流控server统计的带宽在可接受的成本（目前暂定为10GB到20GB的空间），当CDN的带宽撑得住的时候就会把最新的diff下发给客户端，这样就做到离线包一有更新时客户端能以最小的流量代价得到刷新。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYo6tguI8gtC90hbf8R6kBJWJ5cf7bR6eamTgQTxKkV1ibt6nPiacc2pAUg/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<h4 id="数据以及效果"><a href="#数据以及效果" class="headerlink" title="数据以及效果"></a>数据以及效果</h4><p>通过这套系统，我们只花了十几GB的带宽，就把整个BG所有H5业务的离线包覆盖率维持在大概80%到90%。从这个工作中我们也发现一个非常反常规的事情，即大家以为离线包预推会非常消耗带宽，但其实只是偶尔预推才消耗大量带宽；如果长年累月不停地推送，实际上对带宽的消耗非常小，因为时时刻刻都保持在差量下发的状态。</p>
+<p>做了这个工作后我们采集了现网数据，静态直出和传统页面这两种模式对比非常明显。下图页面耗时部分，由于静态直出页面不需要任何JS执行，只需要WebView渲染，所以页面耗时静态直出相比传统页面降低了大概500毫秒到1秒左右。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoLfCSWemroiaNz4GxY8RMx7NINjRvqHoTEWI6gZPAmNf1cKHtS8A0oSw/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>这里有趣的现象是离线包的性价比问题，可以看到传统页面使用离线包可以在网络耗时部分节省700多毫秒，但静态直出这种模式使用离线包只能节省300毫秒左右，这是因为使用静态直出在网络过程中所依赖的外部CSS和JS都已经直出到HTML内部了，不需要额外的网络请求，所以其本身网络耗时有所减少，这时使用离线包的收益开始逐渐下降。</p>
+<p>这里可能有疑问，为什么静态直出在离线包的情况下网络耗时还需要800多毫秒，本地有缓存不应该是零耗时吗？</p>
+<p>我们统计的网络耗时是从WebView load URL开始到页面首行这段时间，实际上包括一部分页面加载，WebView内核的启动，网络组件和渲染组件的加载，所以耗时比较高。</p>
+<p>这里肯定也有优化空间，但当我们的客户端团队正要优化网络耗时这部分的时候，我们的业务形态变了。之前是产品经理配置什么页面就显示什么，所有用户看到的内容都是一样的，现在产品经理说每个用户进入到商城首页看到的内容要完全不一样。</p>
+<p>以下图为例，像左边首页的内容是随机推荐的，右边实际上是通过机器学习根据用户过去表情发送的行为习惯和我们后台的物品做计算匹配，根据用户的喜好行为而推荐的内容。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYonFNzJAGW7tFeHvibPCj9owgGVJ725C7x8OCSrxZicsXspUP8bscW6icDg/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>每个用户进来看到的内容都是不一样，那么静态直出这种模式行不通了，因为我们不可能把所有用户的页面都在后台生成然后发到CDN上，然而这种模式也有很简单的办法来解决。</p>
+<h4 id="动态直出"><a href="#动态直出" class="headerlink" title="动态直出"></a>动态直出</h4><p>我们并不在CDN上存储HTML，而是后台Node.js服务器上动态拼接出整个HTML文件，数据来源是从dataServer去拉取。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoqYffNEj9XNmmiafQibEhkwTq7xLl7YlyC7QU6oNeF9sJQFQn9y78A8ibg/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>这种模式解决了产品的需求，但引入了新的问题。WebView获取html要请求Node.js，Node.js要进行后台页面拼装，中间的网络耗时和后台运算耗时比我们想象中要大。在这个过程中，整个页面是无法渲染的，用户进入我们商城首页则看到一片空白，产品经理同样无法接受，用户也不买单。</p>
+<p>另外这种模式下几乎无法利用WebView本身的缓存，因为后台直出同样在CSS/JS已经全部都在后端执行，WebView很难将一个纯粹的静态HTML全部缓存下来。为了解决上述问题，我们引入了动态缓存的机制。</p>
+<h4 id="动态缓存"><a href="#动态缓存" class="headerlink" title="动态缓存"></a>动态缓存</h4><p>同样我们不让WebView直接访问我们的Node.js服务器，我们在这中间加上之前提到地类似offlineCache的中间层sonicBridge，这个中间层首先会从Node.js服务器下载完整的HTML给WebView，同时会把下载回来的内容在本地完整地做缓存。</p>
+<p>我们之前是全网所有用户缓存同一份HTML，现在修正为全网用户缓存的内容都是从真实server里拉回来的页面。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoh9bfZT8VyWCXVZUAwzpfeicTbNH59SIlTmbjKoI2NkdhwicuLASxD9qw/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>当用户第二次进入页面时，sonicBridge会优先把本地缓存的页面提交给WebView，用户进入页面不需要等待网络请求就可以看到内容，这对用户侧在速度上的体验提升比较大，但它又引入了另外一个问题。</p>
+<p>实际上用户每次打开WebView看到的内容都不一样，Node.js每次返回的数据都是最新的，因此拉回来的数据我们必须让WebView进行reload，这给用户的体验是：明明已经打开了本地缓存好的HTML并且看到内容，但一操作页面却整个reload了。在一些低端机型上WebView reload非常耗时，用户能很明显感觉到整个WebView H5页面白屏一下，然后才刷新出新的内容。</p>
+<p>结合前面提到的静态直出局部refresh部分DOM的经验，我们可以减少网络传输量和减少提交页面的数据量。我们首先做的事情是减少网络传输量，避免refresh的时间太靠后。</p>
+<h4 id="减少传输数据"><a href="#减少传输数据" class="headerlink" title="减少传输数据"></a>减少传输数据</h4><p>我们改变了Node.js组HTML的协议，当sonicBridge在第二次请求数据的时候，Node.js服务器并不会返回整个HTML给sonicBridge，而是返回给我们称为data数据的部分。</p>
+<p>拿到data数据之后，我们和H5页面做了约定，由native侧调用页面的固定刷新函数，并传递数据给页面。页面会去局部刷新自己的DOM节点，这样即使页面需要刷新也不会reload整个页面。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYod1WNOMUm8GJ62T8sYJicRWSlbkeG6dJYgQAFWH1zHEeFicpaoF174ibLQ/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>具体从数据内容的流程上看，首次sonicBridge加载页面返回的仍是完整的HTML，同时会返回我们称为template-tag的id，这个template-tag会标记这个页面中静态不变的那部分hash值，这措施是为了控制缓存。在返回的HTML中我们会也有一些标记，比如sonicdiff-banner，这个banner决定了它的刷新id是什么。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYo10rytCzPLZXoSu4D2G2ibFKiaYVE3mzSOKxpkh1BXzicdBvULcbh6GQrw/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>当第二次加载返回的数据就没有前面看到的整个HTML，只会返回大概37KB的数据，这个data实际上就是一个JSON，但它定义了前面对应例如sonicdiff-banner的DOM结构。为了节省H5中执行的代码，我们直接在JSON中把DOM节点代码拼好，这样页面只需要做id的匹配和刷新。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYo8kG3NT2tVAdJ5Eicflib2GtIkmwxoJwO5qWOqLrdiboQa3EMqXYPFqOnQ/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>这里37KB的传输数据很难避免，我们观察到不同业务的刷新数据量还不一样。能否能再减少一些提交给页面去刷新的数据量呢，毕竟产品经理每次修改的数据也不会很多。</p>
+<h4 id="减少提交页面数据"><a href="#减少提交页面数据" class="headerlink" title="减少提交页面数据"></a>减少提交页面数据</h4><p>我们在sonicCache这一层除了前面提到的我们会缓存完整的HTML、template，还会把数据提取出来做dataCache。</p>
+<p>template是在首次访问的时候，根据sonicdiff里的id信息，把所有可变的数据剔除掉剩下的页面框架。用户二次打开时只要根据返回的数据，在客户端本地和template做merge拼接就可以得到完整的HTML。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYo3VicCW6FCETL7CutBaCNBUib6ia0M9U1OCRGuvjazLFyP7pV1n9geQc0Q/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>我们把每次的dataCache缓存下来后，对数据也做了差量，比如这一次请求返回的是37KB的数据，上次cache的也是37KB的数据，我们会判断内部真正变化的到底有多少，然后只把差量的部分交给HTML刷新，这样在大部分场景下我们的页面只需要处理大概9KB的数据就能刷新整个页面。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoXkonC9W7YpGhIZY8picMUhdM6ibyl6cvEsh7n7BWMic0wLVGKdM0Mo5bw/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>有了cache后用户在本地打开的速度非常快，差量数据的传输也使得用户刷新等待的时间减少了，最后加上这种数据提交时的diff使页面刷新范围也得到大幅的减少。</p>
+<p>整个sonic模式流程如下，看上去比较复杂，但基本原理就是通过Bridge桥接把请求回的HTML分模版和数据进行缓存。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoeRLmlltrMMGkmENlBWyFQxMuSYPXoqIJZRWM0dSk0KicSEtIoTRjLLg/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>这里可能有疑问，前面静态直出花力气做的offlineServer和离线预推策略，在这里还有没有用？事实上动态页面和之前提到的静态页面离线缓存机制我们仍在使用，因为我们业务页面还有大量公用JS，比如QQ提供的JS API封装，还有一些共用的CSS也是通过离线包策略做的预推，这也是大家每次登录的时候都会进行的下载。</p>
+<h4 id="数据以及效果-1"><a href="#数据以及效果-1" class="headerlink" title="数据以及效果"></a>数据以及效果</h4><p>完成这种模式之后数据效果相对明显，首次加载和普通的HTTP加载性能是差不多的，但用户第二次打开页面时，通常只需要1秒的时间就能看到页面，这1秒钟还包括客户端launch进程和WebView的开销，同时我们加载速度不再受用户网络环境的影响，不管是2G还是4G加载速度都接近一样。</p>
+<p>而且还带来一个好处，如果用户的网络比较差，比如经常抖动连接不上，因为我们本地有缓存，因此就算用户当前处于断网状态我们的页面也能打开。</p>
+<p>这里没有提到模板更新的场景，模板更新是指我们抽取出来的template在我们server是有可能动态变化的，这个时候的加载流程和我们前面提到的就不太一样了，当template有变化时，还是按照原来走HTML reload页面的流程，这里的耗时相对偏高，但我们统计发现大部分用户还是落在数据刷新也就是二次打开的状态。</p>
+<h3 id="是否使用持久连接"><a href="#是否使用持久连接" class="headerlink" title="是否使用持久连接"></a>是否使用持久连接</h3><p>在做H5的提速优化时，大家很容易想到我们是否要利用持久连接去避免访问服务器的connect、DNS、握手之类的耗时，像QQ这种客户端它跟后台server是有持久化的连接的。假如用这个连接来向后台服务器请求HTML文件并交给WebView，会不会比临时建立一个connect请求更快呢？我们只需要搭一个反向代理服务就可以从QQ消息后台访问我们Node.js服务器，这个流程是可以打通，但是我们评估认为这种模式未必适合所有的场景。</p>
+<p>确实是有一些App利用持久连接这种通道去加载页面，但在手机QQ比较难行得通，因为手机QQ客户端与sever的持久连接通道是一个非常传统的CS架构，它发送的是socket package，每次需要发送一个请求包，收到应答之后才会继续下一个请求。</p>
+<p>这种应答机制决定了它每次都需要一个等待的过程，而且socket package的约束造成了每次传输的数据包的大小受到限制，像我们30+KB的数据很有可能要拆成五六个数据包，虽然是利用了持久连接节省了connect耗时，但和server多次来回通讯反而把整个耗时加大了。</p>
+<p>另外，从Node.js服务器返回的数据是HTTP流式的，WebView不需要等待整个HTML加载完成后才能进行渲染和显示，只要拿到传输中的first byte就可以开始进行document的解析以及DOM的构造。</p>
+<p>如果要使用持久连接，我们很有可能要经过客户端的加密解密以及组包等步骤，并且要等到整个HTML下载完成之后才能进行显示，我们认为这个时间反而拖慢了性能。</p>
+<h3 id="QQHybrid架构"><a href="#QQHybrid架构" class="headerlink" title="QQHybrid架构"></a>QQHybrid架构</h3><p>经过上述的介绍后，大家对QQHybrid可能有了大概直观的印象：1. 我们在WebScope的前端开发同学做了一部分工作；2. 我们的native层终端开发同学做了bridge桥接，3.我们后台的同学做了很多的自动集成和offlineServer推送等工作。该部分架构如下</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYovEHEdGKyNHfyBDrJmAJvnYXybPNOkOiacVjKvZCkOsyplMjmk06NzSQ/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>接下来我将介绍架构图右边关于页面流量的部分。我们统计过各业务中关于流量的分布，如下图，我们可以明显看到大部分的流量都消耗在图片资源上，但我们做这个分析时也曾经有怀疑，是不是业务特性决定了我们图片消耗是最多的？手机QQ其他H5业务是不是也这样？</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoc6aYz1uGJyxiakzywhjoK5zJ7FGn9qGDtpyxuPibCAxCEaIdiaXz4lLSQ/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<h4 id="春节红包的流量分析"><a href="#春节红包的流量分析" class="headerlink" title="春节红包的流量分析"></a>春节红包的流量分析</h4><p>恰好我们有了一次机会，在2016年春节时手机QQ做了一次几乎所有业务都有参与的活动——春节红包，大家可能还有印象在2016年春节晚上时不停戳屏幕领红包的操作。这种全民狂欢的背后带来了巨大的流量压力，每秒钟大概给用户发出30万左右的礼包，引导用户的web流量大概每秒钟会有十几万次H5页面的打开，当时评估的流量峰值超过1TB。</p>
+<p>我们分析了里面的图片流量，确实占据了接近一半的水平，有一部分我们已经走离线包预推的方式提前下发到用户的手机中，但在活动期间现网的图片流量仍超过了200GB。</p>
+<p>流量并不是简单花钱向运营商买就能解决的问题，春节的活动我们几乎遇到了单域名下流量接近200GB的情况，当时CDN的架构已经快扛不住了。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYoVSQ0zNy1JqJqUW37QYOJSoX7uxWT9kee58MDNJ3RDz7UKBLsn2rKCQ/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>我们都认为这里大有可为，如果图片流量能节省的话，带宽成本能够降低。用户侧所消耗的网络流量和手机电量等等体验都能更好，所以我们团队check了有关图片格式方面的新东西。</p>
+<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>整个QQHybrid的架构基本介绍完了，我们除了性能上的优化，也对CDN上的架构做了调整，也做了运营监控工具。我认为正是有了运营监控系统，才能让我们整个H5和hybird团队能放心大胆地修改页面和发布新功能，同时保证稳定和可靠。</p>
+<p><img src="http://mmbiz.qpic.cn/mmbiz_jpg/YriaiaJPb26VOrZWVbpvjA14RlzW99qnYopYOU2YfEj2pL5GbrrsQnGAP0PsqSrate5ZHEfJMCLU2hm8Q5JlKbYQ/640?wx_fmt=jpeg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt=""></p>
+<p>整个过程中也让我们感到hybrid架构并不像以前大家理解的，只是客户端和前端配合的工作就OK了，在整个架构体系中后台技术也发挥了很大的作用。而CDN改造我们也求助了运维团队的支持，QTA和WPT中也有测试开发团队的参与。可以说整个体系的建立，是所有岗位并肩作战的结果。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/20/Android卡顿监控方案/" rel="next" title="Android卡顿监控方案">
+                <i class="fa fa-chevron-left"></i> Android卡顿监控方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/14/javascript构建/" rel="prev" title="Javascript构建">
+                Javascript构建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://www.saifurrahman.com/wp-content/uploads/2016/04/HelloWorld.jpg"
+                alt="Jason chong" />
+            
+              <p class="site-author-name" itemprop="name">Jason chong</p>
+              <p class="site-description motion-element" itemprop="description">一些平时记录收录的笔记或者原创</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#传统页面的动静分离"><span class="nav-number">1.</span> <span class="nav-text">传统页面的动静分离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态直出-离线预推"><span class="nav-number">2.</span> <span class="nav-text">静态直出+离线预推</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何统一数据"><span class="nav-number">2.1.</span> <span class="nav-text">如何统一数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据以及效果"><span class="nav-number">2.2.</span> <span class="nav-text">数据以及效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态直出"><span class="nav-number">2.3.</span> <span class="nav-text">动态直出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态缓存"><span class="nav-number">2.4.</span> <span class="nav-text">动态缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#减少传输数据"><span class="nav-number">2.5.</span> <span class="nav-text">减少传输数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#减少提交页面数据"><span class="nav-number">2.6.</span> <span class="nav-text">减少提交页面数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据以及效果-1"><span class="nav-number">2.7.</span> <span class="nav-text">数据以及效果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#是否使用持久连接"><span class="nav-number">3.</span> <span class="nav-text">是否使用持久连接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QQHybrid架构"><span class="nav-number">4.</span> <span class="nav-text">QQHybrid架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#春节红包的流量分析"><span class="nav-number">4.1.</span> <span class="nav-text">春节红包的流量分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写在最后"><span class="nav-number">5.</span> <span class="nav-text">写在最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason chong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

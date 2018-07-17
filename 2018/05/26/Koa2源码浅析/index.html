@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Koa2源码浅析koa2划分浅析下图是我从node_modules目录下截的，koa核心就在这两部分，一个koa本身，一个中间件的合成流程控制koa-compose  application.js这个就是koa的入口主要文件，暴露应用的class, 这个class继承自node自带的events，这里就可以看出跟koa1.x很大的不同，koa2大量使用es6的语法，这里就是一个例子，调用的时候就跟">
+<meta name="keywords" content="code article social">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Koa2源码浅析">
+<meta property="og:url" content="http://yoursite.com/2018/05/26/Koa2源码浅析/index.html">
+<meta property="og:site_name" content="Hello World">
+<meta property="og:description" content="Koa2源码浅析koa2划分浅析下图是我从node_modules目录下截的，koa核心就在这两部分，一个koa本身，一个中间件的合成流程控制koa-compose  application.js这个就是koa的入口主要文件，暴露应用的class, 这个class继承自node自带的events，这里就可以看出跟koa1.x很大的不同，koa2大量使用es6的语法，这里就是一个例子，调用的时候就跟">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://7xp9v5.com1.z0.glb.clouddn.com/koa%E5%85%B3%E9%94%AE%E7%9B%AE%E5%BD%95.png">
+<meta property="og:image" content="http://7xp9v5.com1.z0.glb.clouddn.com/koa.png">
+<meta property="og:updated_time" content="2018-05-26T12:50:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Koa2源码浅析">
+<meta name="twitter:description" content="Koa2源码浅析koa2划分浅析下图是我从node_modules目录下截的，koa核心就在这两部分，一个koa本身，一个中间件的合成流程控制koa-compose  application.js这个就是koa的入口主要文件，暴露应用的class, 这个class继承自node自带的events，这里就可以看出跟koa1.x很大的不同，koa2大量使用es6的语法，这里就是一个例子，调用的时候就跟">
+<meta name="twitter:image" content="http://7xp9v5.com1.z0.glb.clouddn.com/koa%E5%85%B3%E9%94%AE%E7%9B%AE%E5%BD%95.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/26/Koa2源码浅析/"/>
+
+
+
+
+
+  <title>Koa2源码浅析 | Hello World</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/26/Koa2源码浅析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jason chong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.saifurrahman.com/wp-content/uploads/2016/04/HelloWorld.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Koa2源码浅析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-26T20:50:48+08:00">
+                2018-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Koa2源码浅析"><a href="#Koa2源码浅析" class="headerlink" title="Koa2源码浅析"></a>Koa2源码浅析</h2><h3 id="koa2划分浅析"><a href="#koa2划分浅析" class="headerlink" title="koa2划分浅析"></a>koa2划分浅析</h3><p>下图是我从node_modules目录下截的，koa核心就在这两部分，一个koa本身，一个中间件的合成流程控制koa-compose</p>
+<p><img src="http://7xp9v5.com1.z0.glb.clouddn.com/koa%E5%85%B3%E9%94%AE%E7%9B%AE%E5%BD%95.png" alt=""></p>
+<h4 id="application-js"><a href="#application-js" class="headerlink" title="application.js"></a>application.js</h4><p>这个就是koa的入口主要文件，暴露应用的class, 这个class继承自node自带的events，这里就可以看出跟koa1.x很大的不同，koa2大量使用es6的语法，这里就是一个例子，调用的时候就跟koa1.x有区别</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var koa = require(&apos;koa&apos;);</span><br><span class="line">// koa 1.x</span><br><span class="line">var app = koa();</span><br><span class="line">// koa 2.x</span><br><span class="line">// 使用class必须使用new来调用</span><br><span class="line">var app = new koa();</span><br></pre></td></tr></table></figure>
+<p>application就是应用，暴露了一些公用的api，比如两个常见的，一个是listen，一个是use， listen就是调用http.createServer，传入callback，当然这个callback就是核心，它里面包含了中间件的合并，上下文的处理，对res的特殊处理(后面说流程会细说，这里先粗略讲讲)，use的话用得就更多了，中间件往往是web框架的主要部分，但是use其实就是很简单起到收集中间件的作用而已，重点在于如何组合它们，如何设计请求到来时如何调用中间件，这些东西其实都在koa-compose里</p>
+<h4 id="context-js"><a href="#context-js" class="headerlink" title="context.js"></a>context.js</h4><p>这部分就是koa的应用上下文ctx,其实就一个简单的对象暴露，里面的重点在delegate，这个就是代理，这个就是为了开发者方便而设计的，比如我们要访问ctx.repsponse.status但是我们通过delegate，可以直接访问ctx.status访问到它（这个实现也不是很复杂，后面再讲）</p>
+<h4 id="request-js、response-js"><a href="#request-js、response-js" class="headerlink" title="request.js、response.js"></a>request.js、response.js</h4><p>这两部分就是对原生的res、req的一些操作了，大量使用es6的get和set的一些语法，去取headers或者设置headers、还有设置body等等，这些就不详细介绍了，有兴趣的读者可以自行看源码</p>
+<h3 id="koa2流程控制-中间件"><a href="#koa2流程控制-中间件" class="headerlink" title="koa2流程控制/中间件"></a>koa2流程控制/中间件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">app.use(async (ctx, next) =&gt; &#123;</span><br><span class="line">  const start = new Date();</span><br><span class="line">  await next();</span><br><span class="line">  const ms = new Date() - start;</span><br><span class="line">  console.log(`$&#123;ctx.method&#125; $&#123;ctx.url&#125; - $&#123;ms&#125;`);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>use方法接受一个函数参数， 返回app实例自身，所以可以链式地写一长串。下面分析一下use方法的源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">use(fn) &#123;</span><br><span class="line">  // 又见类型检测...</span><br><span class="line">  if (typeof fn !== &apos;function&apos;) throw new TypeError(&apos;middleware must be a function!&apos;);</span><br><span class="line">  // 这里我删掉一段判断Generator函数的代码，众所周知，koa1是基于generator和co的，而koa2换成了async await的语法糖</span><br><span class="line">  this.middleware.push(fn);</span><br><span class="line">  return this;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>哈，其实就是简单地往middleware数组push了中间件而已，很简单。</p>
+<h4 id="koa-compose源码分析"><a href="#koa-compose源码分析" class="headerlink" title="koa-compose源码分析"></a>koa-compose源码分析</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">const Promise = require(&apos;any-promise&apos;)</span><br><span class="line">// 这里使用any-promise是为了兼容低版本node</span><br><span class="line">module.exports = compose</span><br><span class="line">function compose (middleware) &#123;</span><br><span class="line">    // 传入的middleware必须是一个数组</span><br><span class="line">  if (!Array.isArray(middleware)) throw new TypeError(&apos;Middleware stack must be an array!&apos;)</span><br><span class="line">    // 传入的middleware的每一个元素都必须是函数</span><br><span class="line">  for (const fn of middleware) &#123;</span><br><span class="line">    if (typeof fn !== &apos;function&apos;) throw new TypeError(&apos;Middleware must be composed of functions!&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">  return function (context, next) &#123;</span><br><span class="line">    let index = -1 // 这里维护一个index的闭包</span><br><span class="line">    return dispatch(0) // 从数组的第一个元素开始`dispatch`</span><br><span class="line">    function dispatch (i) &#123;</span><br><span class="line">      if (i &lt;= index) return Promise.reject(new Error(&apos;next() called multiple times&apos;))</span><br><span class="line">      index = i // 存下当前的索引</span><br><span class="line">      let fn = middleware[i]</span><br><span class="line">      if (i === middleware.length) fn = next </span><br><span class="line">      if (!fn) return Promise.resolve()  //这两行就是来处理最后一个中间件还有next的情况的，其实是可以直接resolve出来的</span><br><span class="line">      try &#123;</span><br><span class="line">            // 这里就是传入next执行中间件代码了</span><br><span class="line">        return Promise.resolve(fn(context, function next () &#123;</span><br><span class="line">          return dispatch(i + 1)</span><br><span class="line">        &#125;))</span><br><span class="line">      &#125; catch (err) &#123;</span><br><span class="line">        return Promise.reject(err)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实这部分要跟application.js中的callback 结合起来看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">   * Return a request handler callback</span><br><span class="line">   * for node&apos;s native http server.</span><br><span class="line">   *</span><br><span class="line">   * @return &#123;Function&#125;</span><br><span class="line">   * @api public</span><br><span class="line">   */</span><br><span class="line"></span><br><span class="line">  callback() &#123;</span><br><span class="line">    const fn = compose(this.middleware);</span><br><span class="line"></span><br><span class="line">    if (!this.listeners(&apos;error&apos;).length) this.on(&apos;error&apos;, this.onerror);</span><br><span class="line"></span><br><span class="line">    const handleRequest = (req, res) =&gt; &#123;</span><br><span class="line">      res.statusCode = 404;</span><br><span class="line">      const ctx = this.createContext(req, res);</span><br><span class="line">      const onerror = err =&gt; ctx.onerror(err);</span><br><span class="line">      const handleResponse = () =&gt; respond(ctx);</span><br><span class="line">      onFinished(res, onerror);</span><br><span class="line">      return fn(ctx).then(handleResponse).catch(onerror);</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    return handleRequest;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>而callback的作用就是http.createServer(app.callback()).listen(…)</p>
+<p><img src="http://7xp9v5.com1.z0.glb.clouddn.com/koa.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/26/LiveData分析/" rel="next" title="LiveData分析">
+                <i class="fa fa-chevron-left"></i> LiveData分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/27/TCP:ip详解-基本概念/" rel="prev" title="TCP/IP基本概念">
+                TCP/IP基本概念 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://www.saifurrahman.com/wp-content/uploads/2016/04/HelloWorld.jpg"
+                alt="Jason chong" />
+            
+              <p class="site-author-name" itemprop="name">Jason chong</p>
+              <p class="site-description motion-element" itemprop="description">一些平时记录收录的笔记或者原创</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Koa2源码浅析"><span class="nav-number">1.</span> <span class="nav-text">Koa2源码浅析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#koa2划分浅析"><span class="nav-number">1.1.</span> <span class="nav-text">koa2划分浅析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#application-js"><span class="nav-number">1.1.1.</span> <span class="nav-text">application.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#context-js"><span class="nav-number">1.1.2.</span> <span class="nav-text">context.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#request-js、response-js"><span class="nav-number">1.1.3.</span> <span class="nav-text">request.js、response.js</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#koa2流程控制-中间件"><span class="nav-number">1.2.</span> <span class="nav-text">koa2流程控制/中间件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#koa-compose源码分析"><span class="nav-number">1.2.1.</span> <span class="nav-text">koa-compose源码分析</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason chong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

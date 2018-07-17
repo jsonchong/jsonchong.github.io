@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="基于美团Robust客户端补丁流程方案设计首先来看一下Robust类中的一些初始化定义 1private static void doHotfixFromNet(final Context context) 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647if (isNeedH">
+<meta name="keywords" content="code article social">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于美团Robust客户端补丁流程方案设计">
+<meta property="og:url" content="http://yoursite.com/2018/05/27/基于美团Robust客户端补丁流程方案设计/index.html">
+<meta property="og:site_name" content="Hello World">
+<meta property="og:description" content="基于美团Robust客户端补丁流程方案设计首先来看一下Robust类中的一些初始化定义 1private static void doHotfixFromNet(final Context context) 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647if (isNeedH">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-27T14:37:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于美团Robust客户端补丁流程方案设计">
+<meta name="twitter:description" content="基于美团Robust客户端补丁流程方案设计首先来看一下Robust类中的一些初始化定义 1private static void doHotfixFromNet(final Context context) 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647if (isNeedH">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/27/基于美团Robust客户端补丁流程方案设计/"/>
+
+
+
+
+
+  <title>基于美团Robust客户端补丁流程方案设计 | Hello World</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/27/基于美团Robust客户端补丁流程方案设计/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jason chong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.saifurrahman.com/wp-content/uploads/2016/04/HelloWorld.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基于美团Robust客户端补丁流程方案设计</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-27T22:37:42+08:00">
+                2018-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="基于美团Robust客户端补丁流程方案设计"><a href="#基于美团Robust客户端补丁流程方案设计" class="headerlink" title="基于美团Robust客户端补丁流程方案设计"></a>基于美团Robust客户端补丁流程方案设计</h2><p>首先来看一下Robust类中的一些初始化定义</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doHotfixFromNet</span><span class="params">(<span class="keyword">final</span> Context context)</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (isNeedHotfixFromNet()) &#123;</span><br><span class="line">           (<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">               <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                   <span class="keyword">try</span> &#123;</span><br><span class="line">                       <span class="keyword">long</span> userID = <span class="number">0L</span>;</span><br><span class="line">                       String versionName = <span class="string">""</span>;</span><br><span class="line">                       String channel = <span class="string">""</span>;</span><br><span class="line">                       String uuid = <span class="string">""</span>;</span><br><span class="line">                       <span class="keyword">if</span> (<span class="keyword">null</span> != Robust.robustParamsProvider) &#123;</span><br><span class="line">                           <span class="keyword">try</span> &#123;</span><br><span class="line">                               userID = Robust.robustParamsProvider.getUserID(context);</span><br><span class="line">                           &#125; <span class="keyword">catch</span> (Throwable var10) &#123;</span><br><span class="line">                               ;</span><br><span class="line">                           &#125;</span><br><span class="line"></span><br><span class="line">                           <span class="keyword">try</span> &#123;</span><br><span class="line">                               versionName = Robust.robustParamsProvider.getVersionName(context);</span><br><span class="line">                           &#125; <span class="keyword">catch</span> (Throwable var9) &#123;</span><br><span class="line">                               ;</span><br><span class="line">                           &#125;</span><br><span class="line"></span><br><span class="line">                           <span class="keyword">try</span> &#123;</span><br><span class="line">                               channel = Robust.robustParamsProvider.getChannel(context);</span><br><span class="line">                           &#125; <span class="keyword">catch</span> (Throwable var8) &#123;</span><br><span class="line">                               ;</span><br><span class="line">                           &#125;</span><br><span class="line"></span><br><span class="line">                           <span class="keyword">try</span> &#123;</span><br><span class="line">                               uuid = Robust.robustParamsProvider.getUUID(context);</span><br><span class="line">                           &#125; <span class="keyword">catch</span> (Throwable var7) &#123;</span><br><span class="line">                               ;</span><br><span class="line">                           &#125;</span><br><span class="line">                       &#125;</span><br><span class="line"></span><br><span class="line">                       RobustCallBack robustCallBack = Robust.robustParamsProvider.getRobustCallBack();</span><br><span class="line">                       <span class="keyword">if</span> (<span class="keyword">null</span> != robustCallBack) &#123;</span><br><span class="line">                           PatchUtils.applyPatch(context, <span class="string">"duitang"</span>, versionName, channel, userID, uuid, PatchUtils.USE_NONE, robustCallBack);</span><br><span class="line">                       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                           Log.d(<span class="string">"robust error"</span>, <span class="string">"RobustCallBack is null!"</span>);</span><br><span class="line">                       &#125;</span><br><span class="line">                   &#125; <span class="keyword">catch</span> (Throwable var11) &#123;</span><br><span class="line">                       ;</span><br><span class="line">                   &#125;</span><br><span class="line"></span><br><span class="line">               &#125;</span><br><span class="line">           &#125;)).start();</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>从RobustParamsProvider中取出一些参数如：userId,uuid,channel,version等信息</li>
+<li>最终调用<code>PatchUtils.applyPatch(context, &quot;duitang&quot;, versionName, channel, userID, uuid, PatchUtils.USE_NONE, robustCallBack);</code></li>
+</ul>
+<h3 id="PatchUtils"><a href="#PatchUtils" class="headerlink" title="PatchUtils"></a>PatchUtils</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">applyPatch</span><span class="params">(Context context, String app, String app_version,</span></span></span><br><span class="line"><span class="function"><span class="params">                                   String channel, <span class="keyword">long</span> userId, String uuid, <span class="keyword">int</span> useStrage, RobustCallBack robustCallBack)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (context == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            String apkHash = RobustApkHashUtils.readRobustApkHash(context);</span><br><span class="line">            <span class="keyword">if</span> (TextUtils.isEmpty(apkHash)) &#123;</span><br><span class="line">                robustCallBack.logNotify(<span class="string">"apkHash"</span>, <span class="string">"apkHash  is isEmpty"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (USE_LOCAL_PATCH_LIST == useStrage) &#123;</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                PatchManipulateImpl patchManipulateImpl = <span class="keyword">new</span> PatchManipulateImpl(app_version, channel, userId, apkHash, uuid, useStrage, robustCallBack);</span><br><span class="line">                PatchHelper.getInstance(context).execute(patchManipulateImpl, patchManipulateImpl);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>拿到当前app的hash值</li>
+<li><code>PatchManipulateImpl</code>是补丁获取和应用补丁具体方法的实现类(这是客户端上层实现补丁获取的方式以及应用所暴露出的接口)</li>
+<li>最后传入<code>PatchManipulateImpl</code>对象到<code>PatchHelper</code>中去执行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public synchronized void execute(PatchManipulateImpl patchManipulate, RobustCallBack robustCallBack) &#123;</span><br><span class="line">        this.handler.post(new PatchExecutor(this.context, patchManipulate, robustCallBack));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="PatchExecutor"><a href="#PatchExecutor" class="headerlink" title="PatchExecutor"></a>PatchExecutor</h3><p>PatchExecutor是一个Thread，我们来具体看一下run方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">//拉取补丁列表</span></span><br><span class="line">        List&lt;Patch&gt; patches = fetchPatchList();</span><br><span class="line">        <span class="comment">//应用补丁列表</span></span><br><span class="line">        applyPatchList(patches);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">        Log.e(<span class="string">"robust"</span>, <span class="string">"PatchExecutor run"</span>, t);</span><br><span class="line">        robustCallBack.exceptionNotify(t, <span class="string">"class:PatchExecutor,method:run,line:36"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 拉取补丁列表</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">   <span class="function"><span class="keyword">protected</span> List&lt;Patch&gt; <span class="title">fetchPatchList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> patchManipulate.fetchPatchList(context);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以看到 <code>patchManipulate.fetchPatchList</code>就是实现了对外暴露获取补丁方式的接口<code>public abstract class PatchManipulate
+extends Object</code>的实现类 ，去调用实现这个类的获取补丁的方法,即<code>patchManipulate.fetchPatchList</code></li>
+</ul>
+<p>下面来一下PatchManipulateImpl对象最核心的实现方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> List&lt;Patch&gt; <span class="title">fetchPatchList</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (USE_LAST_RESULT == useStrategy) &#123;</span><br><span class="line">        <span class="keyword">return</span> patches;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        List&lt;Patch&gt; localOrNetPatches = <span class="keyword">new</span> ArrayList();</span><br><span class="line">        List&lt;Patch&gt; patchesLocal = <span class="keyword">null</span>;</span><br><span class="line">        List&lt;Patch&gt; patchesNet = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">if</span> (useStrategy == USE_LOCAL_PATCH_LIST) &#123;</span><br><span class="line">            <span class="comment">//local patches</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            String listJson = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                String url = <span class="keyword">this</span>.getUrl(context);</span><br><span class="line">                listJson = OkHttpUtils.simpleGet(url);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Throwable var11) &#123;</span><br><span class="line">                ;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!TextUtils.isEmpty(listJson)) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    patchesNet = (List) (<span class="keyword">new</span> Gson()).fromJson(listJson, (<span class="keyword">new</span> TypeToken&lt;List&lt;Patch&gt;&gt;() &#123;</span><br><span class="line">                    &#125;).getType());</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Throwable var10) &#123;</span><br><span class="line">                    <span class="keyword">this</span>.exceptionNotify(var10, <span class="string">"class:PatchManipulateImpl method:fetchPatchList line:111"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != patchesNet) &#123;</span><br><span class="line">                List&lt;Patch&gt; patchesNetForUpdate = <span class="keyword">new</span> ArrayList();</span><br><span class="line">                Iterator iterator = patchesNet.iterator();</span><br><span class="line"></span><br><span class="line">                <span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">                    Patch p = (Patch) iterator.next();</span><br><span class="line">                    Patch tmp = p.clone();</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">null</span> != tmp) &#123;</span><br><span class="line">                        tmp.setLocalPath(getPatchDirPath(context) + p.getMd5() + <span class="string">"_"</span> + <span class="keyword">this</span>.apkHash);</span><br><span class="line">                        patchesNetForUpdate.add(tmp);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                PatchHelper.getInstance(context).updateLocalPatchListDelay(patchesNetForUpdate, <span class="keyword">this</span>.apkHash, <span class="keyword">this</span>.realCallBack);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != patchesNet) &#123;</span><br><span class="line">                localOrNetPatches.addAll(patchesNet);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> == patches) &#123;</span><br><span class="line">            patches = <span class="keyword">new</span> ArrayList();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">this</span>.setInfoAndMergePatches(context, localOrNetPatches);</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != patchesLocal) &#123;</span><br><span class="line">            <span class="keyword">this</span>.onPatchListFetched(<span class="keyword">true</span>, <span class="keyword">false</span>, patches);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">null</span> != patchesNet) &#123;</span><br><span class="line">            <span class="keyword">this</span>.onPatchListFetched(<span class="keyword">true</span>, <span class="keyword">true</span>, patches);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">boolean</span> isNet = OkHttpUtils.isNetworkConnected(context);</span><br><span class="line">            <span class="keyword">this</span>.onPatchListFetched(<span class="keyword">false</span>, isNet, patches);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> patches;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>请求补丁列表的json地址(通常是从server端的某一个接口获取)</li>
+<li>通过Gson将返回的补丁json信息解析成补丁对象<code>Patch</code></li>
+<li><code>tmp.setLocalPath(getPatchDirPath(context) + p.getMd5() + &quot;_&quot; + this.apkHash);</code>这里主要是设置下载补丁到本地路径的localPath</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">updateLocalPatchListDelay</span><span class="params">(<span class="keyword">final</span> List&lt;Patch&gt; patches, <span class="keyword">final</span> String apkHash, <span class="keyword">final</span> RobustCallBack callBack)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != patches) &#123;</span><br><span class="line">        Runnable updateLocalPatchesRunnable = <span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                PatchHelper.updatePatchListJsonToLocal(patches, apkHash, callBack);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">this</span>.updatePatchListLocalRunnables.add(updateLocalPatchesRunnable);</span><br><span class="line">        <span class="keyword">this</span>.handler.postDelayed(updateLocalPatchesRunnable, DELAY_TIME);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>updateLocalPatchListDelay</code>最终会调用 <code>PatchHelper.updatePatchListJsonToLocal</code> updatePatchListJsonToLocal主要是将本地跟此版本对应的补丁对象与server返回的Patch对象进行一下比较，如果本地的Patch对象跟返回的server补丁对象不一致，就删除本地的Patch对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">setInfoAndMergePatches</span><span class="params">(Context context, List&lt;Patch&gt; patches)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != patches &amp;&amp; !patches.isEmpty()) &#123;</span><br><span class="line">        Iterator iterator = patches.iterator();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">            Patch patch = (Patch) iterator.next();</span><br><span class="line">            patch.setLocalPath(getPatchDirPath(context) + patch.getMd5() + <span class="string">"_"</span> + <span class="keyword">this</span>.apkHash);</span><br><span class="line">            <span class="keyword">if</span> (TextUtils.isEmpty(patch.getAppHash())) &#123;</span><br><span class="line">                patch.setAppHash(RobustApkHashUtils.readRobustApkHash(context));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (TextUtils.isEmpty(patch.getPatchesInfoImplClassFullName())) &#123;</span><br><span class="line">                patch.setPatchesInfoImplClassFullName(<span class="string">"com.meituan.robust.patch.PatchesInfoImpl"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (!<span class="keyword">this</span>.isPatchesContains(patch)) &#123;</span><br><span class="line">                patches.add(patch);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>很明显<code>setInfoAndMergePatches</code>方法是将server返回的补丁对象补充一些信息,如LocalPath,appHash,<code>setPatchesInfoImplClassFullName</code>这个属性是设置补丁的入口类，默认是<code>com.meituan.robust.patch.PatchesInfoImpl</code></li>
+</ul>
+<h4 id="好了获取补丁的流程到这已经差不多了，下面是应用补丁的过程，此过程是在Robust框架下完成的-即在Robust依赖库中完成"><a href="#好了获取补丁的流程到这已经差不多了，下面是应用补丁的过程，此过程是在Robust框架下完成的-即在Robust依赖库中完成" class="headerlink" title="好了获取补丁的流程到这已经差不多了，下面是应用补丁的过程，此过程是在Robust框架下完成的(即在Robust依赖库中完成)"></a>好了获取补丁的流程到这已经差不多了，下面是应用补丁的过程，此过程是在Robust框架下完成的(即在Robust依赖库中完成)</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 应用补丁列表</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">applyPatchList</span><span class="params">(List&lt;Patch&gt; patches)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">null</span> == patches || patches.isEmpty()) &#123;</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      Log.d(<span class="string">"robust"</span>, <span class="string">" patchManipulate list size is "</span> + patches.size());</span><br><span class="line"></span><br><span class="line">      <span class="comment">//1.patches dex + resources</span></span><br><span class="line">      <span class="comment">//2.patches dex</span></span><br><span class="line">      <span class="comment">//3.patches resources</span></span><br><span class="line">      <span class="comment">//4.按照1&amp;3的name从大到小排序 (dex都应用，但是资源只用第一个已经recover的）</span></span><br><span class="line">      List&lt;Patch&gt; dexPatches = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">      List&lt;Patch&gt; resourcesPatches = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">      List&lt;Patch&gt; dexAndResourcesPatches = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">      <span class="comment">//先下载</span></span><br><span class="line">      <span class="keyword">for</span> (Patch p : patches) &#123;</span><br><span class="line">          <span class="keyword">if</span> (p.isAppliedSuccess()) &#123;</span><br><span class="line">              Log.d(<span class="string">"robust"</span>, <span class="string">"p.isAppliedSuccess() skip "</span> + p.getLocalPath());</span><br><span class="line">              <span class="keyword">continue</span>;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">if</span> (patchManipulate.ensurePatchExist(p)) &#123;</span><br><span class="line"></span><br><span class="line">              <span class="keyword">if</span> (patchManipulate.verifyPatch(context, p)) &#123;</span><br><span class="line"></span><br><span class="line">                  <span class="keyword">int</span> patchType = PatchTypeUtil.getPatchType(p);</span><br><span class="line"></span><br><span class="line">                  <span class="keyword">if</span> (PatchTypeUtil.isDexAndResourceType(patchType)) &#123;</span><br><span class="line">                      <span class="keyword">if</span> (ApkRecover.isRecovered(context, p.getName(), p.getMd5())) &#123;</span><br><span class="line">                          dexAndResourcesPatches.add(p);</span><br><span class="line">                      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                          String resourceTmpPath = ApkRecover.copyPatch2TmpPath(context, p.getName(), p.getMd5(), p.getTempPath());</span><br><span class="line">                          <span class="keyword">if</span> (!TextUtils.isEmpty(resourceTmpPath)) &#123;</span><br><span class="line">                              RobustRecoverService.startRobustRecoverService(context, p.getName(), p.getMd5(), resourceTmpPath);</span><br><span class="line">                          &#125;</span><br><span class="line">                      &#125;</span><br><span class="line">                      <span class="keyword">continue</span>;</span><br><span class="line">                  &#125;</span><br><span class="line"></span><br><span class="line">                  <span class="keyword">if</span> (PatchTypeUtil.isDexType(patchType)) &#123;</span><br><span class="line">                      dexPatches.add(p);</span><br><span class="line">                      <span class="keyword">continue</span>;</span><br><span class="line">                  &#125;</span><br><span class="line"></span><br><span class="line">                  <span class="keyword">if</span> (PatchTypeUtil.isResourceType(patchType)) &#123;</span><br><span class="line">                      <span class="keyword">if</span> (ApkRecover.isRecovered(context, p.getName(), p.getMd5())) &#123;</span><br><span class="line">                          resourcesPatches.add(p);</span><br><span class="line">                      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                          String resourceTmpPath = ApkRecover.copyPatch2TmpPath(context, p.getName(), p.getMd5(), p.getTempPath());</span><br><span class="line">                          <span class="keyword">if</span> (!TextUtils.isEmpty(resourceTmpPath)) &#123;</span><br><span class="line">                              RobustRecoverService.startRobustRecoverService(context, p.getName(), p.getMd5(), resourceTmpPath);</span><br><span class="line">                          &#125;</span><br><span class="line">                      &#125;</span><br><span class="line"></span><br><span class="line">                      <span class="keyword">continue</span>;</span><br><span class="line">                  &#125;</span><br><span class="line"></span><br><span class="line">              &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                  robustCallBack.logNotify(<span class="string">"verifyPatch failure, patch info:"</span> + <span class="string">"id = "</span> + p.getName() + <span class="string">",md5 = "</span> + p.getMd5(), <span class="string">"class:PatchExecutor method:patch line:107"</span>);</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      applyDexTypePatches(dexPatches);</span><br><span class="line">      applyOtherPatches(resourcesPatches, dexAndResourcesPatches);</span><br><span class="line"></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>resourcesPatches这个对象说明Robust框架已经可以支持资源修复了(日后会研究)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">ensurePatchExist</span><span class="params">(Patch patch)</span> </span>&#123;</span><br><span class="line">    File localPatchFile = <span class="keyword">new</span> File(patch.getLocalPath());</span><br><span class="line">    Log.d(<span class="string">"robust"</span>, <span class="string">"补丁是否存在 in  ensurePatchExist"</span> + localPatchFile.exists());</span><br><span class="line">    <span class="keyword">if</span> (localPatchFile.exists() &amp;&amp; VerifyUtils.isLocalPatchValid(patch.getMd5(), localPatchFile)) &#123;</span><br><span class="line">        <span class="keyword">this</span>.onPatchFetched(<span class="keyword">true</span>, <span class="keyword">false</span>, patch);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">boolean</span> result = PatchHelper.downloadPatchSafe(patch.getUrl(), localPatchFile);</span><br><span class="line">        <span class="keyword">this</span>.onPatchFetched(result, <span class="keyword">true</span>, patch);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这个方法很重要，通过补丁的localPath判断本地是否下载过，如果有就不会再下载，避免了获取补丁信息之后重复下载,如果本地不存在则从网络下载真正的补丁包</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">  protected boolean verifyPatch(Context context, Patch patch) &#123;</span><br><span class="line">      //验证补丁md5是否合法</span><br><span class="line">      return VerifyUtils.decryptPatch(context, patch.getLocalPath(), patch.getTempPath());</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>通过比较md5验证下载下来补丁的合法性(为了防止无论是本地存在的补丁包还是从cdn下载的补丁包被篡改)</p>
+</li>
+<li><p><code>int patchType = PatchTypeUtil.getPatchType(p);</code>获取补丁包的类型，如果是class.dex表示只是代码修复补丁</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">applyDexTypePatches</span><span class="params">(List&lt;Patch&gt; patches)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    List&lt;Patch&gt; failedPatches = <span class="keyword">new</span> ArrayList&lt;Patch&gt;();</span><br><span class="line">    <span class="keyword">for</span> (Patch p : patches) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span> currentPatchResult = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            currentPatchResult = patch(context, p);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">            robustCallBack.exceptionNotify(t, <span class="string">"class:PatchExecutor method:applyPatchList line:69"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (currentPatchResult) &#123;</span><br><span class="line">            <span class="comment">//设置patch 状态为成功</span></span><br><span class="line">            p.setAppliedSuccess(<span class="keyword">true</span>);</span><br><span class="line">            <span class="comment">//统计PATCH成功率 PATCH成功</span></span><br><span class="line">            robustCallBack.onPatchApplied(<span class="keyword">true</span>, p);</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//case: class in plugin, and robust run quickly, retry</span></span><br><span class="line">            Log.e(<span class="string">"robust"</span>, <span class="string">"patch need retry! "</span>);</span><br><span class="line">            failedPatches.add(p);</span><br><span class="line">            <span class="comment">//统计PATCH成功率 PATCH失败</span></span><br><span class="line">            robustCallBack.onPatchApplied(<span class="keyword">false</span>, p);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Log.d(<span class="string">"robust"</span>, <span class="string">"patch LocalPath:"</span> + p.getLocalPath() + <span class="string">",apply result "</span> + currentPatchResult);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (failedPatches.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">//case: class in plugin, and robust run quickly, retry</span></span><br><span class="line">        <span class="comment">// <span class="doctag">TODO:</span> 17/6/20 什么时机重试呢？ 重试几次呢？</span></span><br><span class="line">        <span class="keyword">for</span> (Patch patch : failedPatches) &#123;</span><br><span class="line">            robustCallBack.logNotify(<span class="string">"patch apply failed , patch name is : "</span> + patch.getName(), <span class="string">"class:PatchExecutor method:applyDexTypePatches line:159"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面就是最核心的补丁修复原理的代码了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">patch</span><span class="params">(Context context, Patch patch)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    DexClassLoader classLoader = <span class="keyword">new</span> DexClassLoader(patch.getTempPath(), context.getCacheDir().getAbsolutePath(),</span><br><span class="line">            <span class="keyword">null</span>, PatchExecutor.class.getClassLoader());</span><br><span class="line">    patch.delete(patch.getTempPath());</span><br><span class="line"></span><br><span class="line">    Class patchClass, oldClass;</span><br><span class="line"></span><br><span class="line">    Class patchsInfoClass;</span><br><span class="line">    PatchesInfo patchesInfo = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Log.d(<span class="string">"robust"</span>, <span class="string">"PatchsInfoImpl name:"</span> + patch.getPatchesInfoImplClassFullName());</span><br><span class="line">        patchsInfoClass = classLoader.loadClass(patch.getPatchesInfoImplClassFullName());</span><br><span class="line">        patchesInfo = (PatchesInfo) patchsInfoClass.newInstance();</span><br><span class="line">        Log.d(<span class="string">"robust"</span>, <span class="string">"PatchsInfoImpl ok"</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">        robustCallBack.exceptionNotify(t, <span class="string">"class:PatchExecutor method:patch line:108"</span>);</span><br><span class="line">        Log.e(<span class="string">"robust"</span>, <span class="string">"PatchsInfoImpl failed,cause of"</span> + t.toString());</span><br><span class="line">        t.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (patchesInfo == <span class="keyword">null</span>) &#123;</span><br><span class="line">        robustCallBack.logNotify(<span class="string">"patchesInfo is null, patch info:"</span> + <span class="string">"id = "</span> + patch.getName() + <span class="string">",md5 = "</span> + patch.getMd5(), <span class="string">"class:PatchExecutor method:patch line:114"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//classes need to patch</span></span><br><span class="line">    List&lt;PatchedClassInfo&gt; patchedClasses = patchesInfo.getPatchedClassesInfo();</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == patchedClasses || patchedClasses.isEmpty()) &#123;</span><br><span class="line">        robustCallBack.logNotify(<span class="string">"patchedClasses is null or empty, patch info:"</span> + <span class="string">"id = "</span> + patch.getName() + <span class="string">",md5 = "</span> + patch.getMd5(), <span class="string">"class:PatchExecutor method:patch line:122"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> isClassNotFoundException = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">for</span> (PatchedClassInfo patchedClassInfo : patchedClasses) &#123;</span><br><span class="line">        String patchedClassName = patchedClassInfo.patchedClassName;</span><br><span class="line">        String patchClassName = patchedClassInfo.patchClassName;</span><br><span class="line">        <span class="keyword">if</span> (TextUtils.isEmpty(patchedClassName) || TextUtils.isEmpty(patchClassName)) &#123;</span><br><span class="line">            robustCallBack.logNotify(<span class="string">"patchedClasses or patchClassName is empty, patch info:"</span> + <span class="string">"id = "</span> + patch.getName() + <span class="string">",md5 = "</span> + patch.getMd5(), <span class="string">"class:PatchExecutor method:patch line:131"</span>);</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        Log.d(<span class="string">"robust"</span>, <span class="string">"current path:"</span> + patchedClassName);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                oldClass = classLoader.loadClass(patchedClassName.trim());</span><br><span class="line">            &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">                isClassNotFoundException = <span class="keyword">true</span>;</span><br><span class="line">                robustCallBack.exceptionNotify(e, <span class="string">"class:PatchExecutor method:patch line:258"</span>);</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            Field[] fields = oldClass.getDeclaredFields();</span><br><span class="line">            Log.d(<span class="string">"robust"</span>, <span class="string">"oldClass :"</span> + oldClass + <span class="string">"     fields "</span> + fields.length);</span><br><span class="line">            Field changeQuickRedirectField = <span class="keyword">null</span>;</span><br><span class="line">            <span class="keyword">for</span> (Field field : fields) &#123;</span><br><span class="line">                <span class="keyword">if</span> (TextUtils.equals(field.getType().getCanonicalName(), ChangeQuickRedirect.class.getCanonicalName()) &amp;&amp; TextUtils.equals(field.getDeclaringClass().getCanonicalName(), oldClass.getCanonicalName())) &#123;</span><br><span class="line">                    changeQuickRedirectField = field;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (changeQuickRedirectField == <span class="keyword">null</span>) &#123;</span><br><span class="line">                robustCallBack.logNotify(<span class="string">"changeQuickRedirectField  is null, patch info:"</span> + <span class="string">"id = "</span> + patch.getName() + <span class="string">",md5 = "</span> + patch.getMd5(), <span class="string">"class:PatchExecutor method:patch line:147"</span>);</span><br><span class="line">                Log.d(<span class="string">"robust"</span>, <span class="string">"current path:"</span> + patchedClassName + <span class="string">" something wrong !! can  not find:ChangeQuickRedirect in"</span> + patchClassName);</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            Log.d(<span class="string">"robust"</span>, <span class="string">"current path:"</span> + patchedClassName + <span class="string">" find:ChangeQuickRedirect "</span> + patchClassName);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                patchClass = classLoader.loadClass(patchClassName);</span><br><span class="line">                Object patchObject = patchClass.newInstance();</span><br><span class="line">                changeQuickRedirectField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                changeQuickRedirectField.set(<span class="keyword">null</span>, patchObject);</span><br><span class="line">                Log.d(<span class="string">"robust"</span>, <span class="string">"changeQuickRedirectField set sucess "</span> + patchClassName);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">                Log.e(<span class="string">"robust"</span>, <span class="string">"patch failed! "</span>);</span><br><span class="line">                t.printStackTrace();</span><br><span class="line">                robustCallBack.exceptionNotify(t, <span class="string">"class:PatchExecutor method:patch line:163"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">            Log.e(<span class="string">"robust"</span>, <span class="string">"patch failed! "</span>);</span><br><span class="line">            t.printStackTrace();</span><br><span class="line">            robustCallBack.exceptionNotify(t, <span class="string">"class:PatchExecutor method:patch line:169"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    Log.d(<span class="string">"robust"</span>, <span class="string">"patch finished "</span>);</span><br><span class="line">    <span class="keyword">if</span> (isClassNotFoundException) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>可以看到修复原理主要利用系统的DexClassLoader来进行loadClass,所有确实Robust在热修复的兼容性上是能足够保证的</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">patchClass = classLoader.loadClass(patchClassName);</span><br><span class="line">                   Object patchObject = patchClass.newInstance();</span><br><span class="line">                   changeQuickRedirectField.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                   changeQuickRedirectField.set(<span class="keyword">null</span>, patchObject);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将实现了ChangeQuickRedirectField接口的补丁逻辑类设置给之前预埋补丁代码的类的changeQuickRedirectField属性中，预埋代码的部分是在打包过程中完成的，修复完成后用户除了无感知之外并且也不需要重启app，直接无痕修复了线上的bug</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>上述逻辑主要是根据Robust框架的修复流程来设计的客户端应用此框架的一个流程，主要从获取补丁的稳定性以及保护补丁的安全性入手，加入了一些安全读写补丁文件工具类，后续会对有专门的文章来分析它们的实现</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/27/TCP:ip详解-传输层TCP协议/" rel="next" title="TCP协议">
+                <i class="fa fa-chevron-left"></i> TCP协议
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/28/TCP:ip详解-传输层UDP协议/" rel="prev" title="UDP协议">
+                UDP协议 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://www.saifurrahman.com/wp-content/uploads/2016/04/HelloWorld.jpg"
+                alt="Jason chong" />
+            
+              <p class="site-author-name" itemprop="name">Jason chong</p>
+              <p class="site-description motion-element" itemprop="description">一些平时记录收录的笔记或者原创</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基于美团Robust客户端补丁流程方案设计"><span class="nav-number">1.</span> <span class="nav-text">基于美团Robust客户端补丁流程方案设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PatchUtils"><span class="nav-number">1.1.</span> <span class="nav-text">PatchUtils</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PatchExecutor"><span class="nav-number">1.2.</span> <span class="nav-text">PatchExecutor</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#好了获取补丁的流程到这已经差不多了，下面是应用补丁的过程，此过程是在Robust框架下完成的-即在Robust依赖库中完成"><span class="nav-number">1.2.1.</span> <span class="nav-text">好了获取补丁的流程到这已经差不多了，下面是应用补丁的过程，此过程是在Robust框架下完成的(即在Robust依赖库中完成)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason chong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

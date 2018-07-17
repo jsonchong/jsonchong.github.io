@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="##LintingLinting是一种自动检查javascript代码错误的方法在linting中没有绝对的正确和错误，许多都是非常主观的，另外编码风格检查句式和结构检查也存在区别，例如某些语句不能执行，或者没有对null做严格判断另一方面，编码风格也会指出如变量的大小写不正确，那么如果linting确保你的代码看起来漂亮，并且检查所有可能错误 是否意味着只要linter高兴 代码就会顺利执行？并">
+<meta name="keywords" content="code article social">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript构建">
+<meta property="og:url" content="http://yoursite.com/2018/07/14/javascript构建/index.html">
+<meta property="og:site_name" content="Hello World">
+<meta property="og:description" content="##LintingLinting是一种自动检查javascript代码错误的方法在linting中没有绝对的正确和错误，许多都是非常主观的，另外编码风格检查句式和结构检查也存在区别，例如某些语句不能执行，或者没有对null做严格判断另一方面，编码风格也会指出如变量的大小写不正确，那么如果linting确保你的代码看起来漂亮，并且检查所有可能错误 是否意味着只要linter高兴 代码就会顺利执行？并">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://d17h27t6h515a5.cloudfront.net/topher/2017/December/5a31c70c_l3-64-prototype-chain-diagram/l3-64-prototype-chain-diagram.png">
+<meta property="og:updated_time" content="2018-07-14T04:35:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Javascript构建">
+<meta name="twitter:description" content="##LintingLinting是一种自动检查javascript代码错误的方法在linting中没有绝对的正确和错误，许多都是非常主观的，另外编码风格检查句式和结构检查也存在区别，例如某些语句不能执行，或者没有对null做严格判断另一方面，编码风格也会指出如变量的大小写不正确，那么如果linting确保你的代码看起来漂亮，并且检查所有可能错误 是否意味着只要linter高兴 代码就会顺利执行？并">
+<meta name="twitter:image" content="https://d17h27t6h515a5.cloudfront.net/topher/2017/December/5a31c70c_l3-64-prototype-chain-diagram/l3-64-prototype-chain-diagram.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/07/14/javascript构建/"/>
+
+
+
+
+
+  <title>Javascript构建 | Hello World</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/14/javascript构建/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jason chong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.saifurrahman.com/wp-content/uploads/2016/04/HelloWorld.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Javascript构建</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-14T12:35:33+08:00">
+                2018-07-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JavaScript/" itemprop="url" rel="index">
+                    <span itemprop="name">-JavaScript</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>##Linting<br>Linting是一种自动检查javascript代码错误的方法<br>在linting中没有绝对的正确和错误，许多都是非常主观的，<br>另外编码风格检查句式和结构检查也存在区别，例如某些语句不能执行，或者没有对null做严格判断<br>另一方面，编码风格也会指出如变量的大小写不正确，那么如果linting确保你的代码看起来漂亮，并且检查所有可能错误 是否意味着只要linter高兴 代码就会顺利执行？并不是。linting只检查可能的错误，并不真正知道你的意图<br>市场上有三个JavaScript linting的检查工具：<code>JSHint</code> , <code>JSCS</code> 和 <code>ESLint</code></p>
+<p>区别以及说明：<a href="https://segmentfault.com/a/1190000010264410?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="noopener">对比 JavaScript linting 工具（译文）</a></p>
+<h4 id="gulp-eslint"><a href="#gulp-eslint" class="headerlink" title="gulp-eslint"></a>gulp-eslint</h4><blockquote>
+<p>A gulp plugin for ESLint.</p>
+</blockquote>
+<p>use npm:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install gulp-eslint</span><br></pre></td></tr></table></figure>
+<h4 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">const</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"><span class="keyword">const</span> eslint = <span class="built_in">require</span>(<span class="string">'gulp-eslint'</span>);</span><br><span class="line"> </span><br><span class="line">gulp.task(<span class="string">'lint'</span>, () =&gt; &#123;</span><br><span class="line">    <span class="comment">// ESLint ignores files with "node_modules" paths.</span></span><br><span class="line">    <span class="comment">// So, it's best to have gulp ignore the directory as well.</span></span><br><span class="line">    <span class="comment">// Also, Be sure to return the stream from the task;</span></span><br><span class="line">    <span class="comment">// Otherwise, the task may end before the stream has finished.</span></span><br><span class="line">    <span class="keyword">return</span> gulp.src([<span class="string">'**/*.js'</span>,<span class="string">'!node_modules/**'</span>])</span><br><span class="line">        <span class="comment">// eslint() attaches the lint output to the "eslint" property</span></span><br><span class="line">        <span class="comment">// of the file object so it can be used by other modules.</span></span><br><span class="line">        .pipe(eslint())</span><br><span class="line">        <span class="comment">// eslint.format() outputs the lint results to the console.</span></span><br><span class="line">        <span class="comment">// Alternatively use eslint.formatEach() (see Docs).</span></span><br><span class="line">        .pipe(eslint.format())</span><br><span class="line">        <span class="comment">// To have the process exit with an error code (1) on</span></span><br><span class="line">        <span class="comment">// lint error, return the stream and pipe to failAfterError last.</span></span><br><span class="line">        .pipe(eslint.failAfterError());</span><br><span class="line">&#125;);</span><br><span class="line"> </span><br><span class="line">gulp.task(<span class="string">'default'</span>, [<span class="string">'lint'</span>], <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// This will only run if the lint task is successful...</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Or use the plugin API to do things like:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">gulp.src([<span class="string">'**/*.js'</span>,<span class="string">'!node_modules/**'</span>])</span><br><span class="line">    .pipe(eslint(&#123;</span><br><span class="line">        rules: &#123;</span><br><span class="line">            <span class="string">'my-custom-rule'</span>: <span class="number">1</span>,</span><br><span class="line">            <span class="string">'strict'</span>: <span class="number">2</span></span><br><span class="line">        &#125;,</span><br><span class="line">        globals: [</span><br><span class="line">            <span class="string">'jQuery'</span>,</span><br><span class="line">            <span class="string">'$'</span></span><br><span class="line">        ],</span><br><span class="line">        envs: [</span><br><span class="line">            <span class="string">'browser'</span></span><br><span class="line">        ]</span><br><span class="line">    &#125;))</span><br><span class="line">    .pipe(eslint.formatEach(<span class="string">'compact'</span>, process.stderr));</span><br></pre></td></tr></table></figure>
+<h3 id="JavaScript-使用函数作用域"><a href="#JavaScript-使用函数作用域" class="headerlink" title="JavaScript 使用函数作用域"></a>JavaScript 使用函数作用域</h3><p>这完全是因为 JavaScript 中的变量传统上是在函数作用域内定义的，而不是在块作用域内。由于输入一个函数会改变作用域，因此在函数内部定义的变量在该函数外部是不可用的。相反，如果在块中定义了任何变量（例如，在 if 语句中），则这些变量在该块外部是可用的。</p>
+<blockquote>
+<p>由于 JavaScript 使用函数作用域，因此函数可以访问它自己的所有变量以及它外部的所有全局变量。</p>
+</blockquote>
+<h4 id="块作用域"><a href="#块作用域" class="headerlink" title="块作用域"></a>块作用域</h4><p>ES6 语法允许额外的作用域，并使用 let 和 const 关键字来声明变量。这些关键字在 JavaScript 中用于声明块作用域变量，并在很大程度上取代了使用 var 的需求.</p>
+<h4 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h4><p>每当你的代码试图在函数调用过程中访问一个变量时，JavaScript 解释器总是会先查看其本地变量。如果找不到该变量，搜索将在所谓的作用域链上继续查找。让我们来看一个例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">one</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  two();</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">two</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    three();</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">three</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="comment">// 函数 three 的代码</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">one();</span><br></pre></td></tr></table></figure>
+<p>在以上示例中，当 one() 被调用时，其他所有嵌套函数也会被调用（一直到 three()）。</p>
+<p>你可以直观地看到作用域链从最内层开始向外移动：从 three()，到 two()，到 one()，最后到 window（即全局/窗口对象）。这样，函数 three() 不仅可以访问它“上面”的变量和函数（即 two() 和 one() 的）——three() 还可以访问在 one() 外部定义的任何全局变量。</p>
+<h4 id="变量阴影"><a href="#变量阴影" class="headerlink" title="变量阴影"></a>变量阴影</h4><p>当你所创建的变量与作用域链中的另一个变量具有相同名称时，会发生什么？</p>
+<p>JavaScript 不会弹出错误消息或阻止你创建这样一个变量。实际上，局部作用域的变量只会暂时“遮蔽”外部作用域中的变量。这被称为<strong>变量阴影</strong>。请考虑以下示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> symbol = <span class="string">'¥'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">displayPrice</span>(<span class="params">price</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> symbol = <span class="string">'$'</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(symbol + price);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">displayPrice(<span class="string">'80'</span>);</span><br><span class="line"><span class="comment">// $80</span></span><br></pre></td></tr></table></figure>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>当一个函数被运行时，它会创建自己的<strong>作用域</strong>。函数的作用域是该函数中可用的一组变量。一个函数的作用域包括：</p>
+<p>1.该函数的参数。<br>2.该函数内部声明的局部变量。<br>3.来自其父函数作用域的变量。<br>4.全局变量。</p>
+<p>JavaScript 中的变量也遵循函数作用域。这意味着，在函数内定义的任何变量均不可用于该函数之外，尽管在块内定义的任何变量（例如 <code>if</code> 或 <code>for</code>）在该块之外是可用的。</p>
+<p>在访问变量时，JavaScript 引擎将遍历作用域链，首先查看最内层（例如函数的局部变量），然后查看外层作用域，最后在必要时到达全局作用域。</p>
+<h3 id="闭包"><a href="#闭包" class="headerlink" title="闭包"></a>闭包</h3><h4 id="函数保留其作用域"><a href="#函数保留其作用域" class="headerlink" title="函数保留其作用域"></a>函数保留其作用域</h4><p>让我们来看一个函数保留对其作用域的访问的例子。请考虑以下 remember() 函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">remember</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> number;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> returnedFunction = remember(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log( returnedFunction() ); <span class="comment">// 打印数字 5</span></span><br></pre></td></tr></table></figure>
+<p>当 Javascript 引擎输入 <code>remember</code> 时，它会创建一个新的执行作用域，指向先前的执行作用域。这个新的作用域包含一个对 <code>number</code> 参数的引用（一个值为 5 的不可变 <code>Number</code>）。当引擎到达内部函数（一个函数表达式）时，它会将一个链接附加到当前的执行作用域。</p>
+<p>函数保留对其作用域的访问的这个过程被称为闭包。在这个例子中，闭包可以捕获它所需要的任何数量的参数和变量。MDN 将闭包定义为：</p>
+<blockquote>
+<p>“函数及其声明位置的词法环境的组合。”</p>
+</blockquote>
+<p>当一个函数被声明时，它会锁定在作用域链上。你可能会认为这很简单，因为我们刚在上一部分学过。但是，函数的真正有趣之处在于，即使它在声明位置以外的地方被调用时，也会保留该作用域链。这一切都是由于闭包！</p>
+<p>让我们回头来看上面的例子——当 remember(5) 被执行和返回后，所返回的函数如何能够继续访问 number 的值（即 5）？ 在本部分，我们将探讨闭包如何帮助我们在创建函数对象时存储一个状态快照。让我们马上来看看吧！</p>
+<h4 id="创建一个闭包"><a href="#创建一个闭包" class="headerlink" title="创建一个闭包"></a>创建一个闭包</h4><p>每次定义函数时，都会为该函数创建闭包。因此，严格来说，每个函数都有闭包！这是因为，函数至少会在作用域链上遮蔽另一个上下文：全局作用域。但是，当你使用嵌套函数（即在另一个函数中定义的函数）时，闭包的功能才会真正发挥出来。</p>
+<p>还记得吗，嵌套函数可以访问其外部的变量。根据我们所学到的作用域链知识，这包括来自外层封闭函数本身的变量！这些嵌套函数可以捕获（或“遮蔽”）并未作为参数传入</p>
+<p>需要特别指出的是，函数会保持对其父作用域的引用。如果仍可访问该函数的引用，作用域就会保持不变！</p>
+<h4 id="闭包和作用域"><a href="#闭包和作用域" class="headerlink" title="闭包和作用域"></a>闭包和作用域</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> myName = <span class="string">'Andrew'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">introduceMyself</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> you = <span class="string">'student'</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">introduce</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`Hello, <span class="subst">$&#123;you&#125;</span>, I'm <span class="subst">$&#123;myName&#125;</span>!`</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> introduce();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">introduceMyself();</span><br><span class="line"><span class="comment">// 'Hello, student, I'm Andrew!'</span></span><br></pre></td></tr></table></figure>
+<p>总结来说：myName 是一个在函数外部定义的变量，因此它是全局作用域内的一个全局变量。这意味着，myName 可供所有函数使用。另一方面，you 被 introduce() 引用，尽管它并非在 introduce() 中被声明。这是可能的，因为嵌套函数的作用域包括该函数的嵌套作用域中所声明的变量（即定义该函数的父函数作用域中的变量）。</p>
+<p>事实证明，introduce() 函数及其词法环境形成了一个闭包。因此，introduce() 不仅可以访问全局变量 myName，还可以访问在其父函数 introduceMyself() 的作用域中声明的变量 you。</p>
+<h3 id="原型继承"><a href="#原型继承" class="headerlink" title="原型继承"></a>原型继承</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Cat</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"> <span class="keyword">this</span>.lives = <span class="number">9</span>;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">this</span>.sayName = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">   <span class="built_in">console</span>.log(<span class="string">`Meow! My name is <span class="subst">$&#123;<span class="keyword">this</span>.name&#125;</span>`</span>);</span><br><span class="line"> &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样，通过将一个函数保存到新创建的 <code>Cat</code> 对象的 <code>sayName</code> 属性中，可以将 <code>sayName()</code> 方法添加到所有 <code>Cat</code> 对象上。这样做没问题，但是如果我们想用这个构造函数实例化更多的 Cat 对象呢？你每一次都要为这个 <code>Cat</code> 对象的 <code>sayName</code> 创建一个新的函数！更重要的是：如果你想对方法进行更改，则必须逐个更新所有对象。在这种情况下，最好是让同一个 <code>Cat</code> 构造函数所创建的所有对象共享一个 <code>sayName</code> 方法。</p>
+<p>为了节省内存并保持简洁，我们可以在构造函数的 <code>prototype</code> 属性中添加方法。原型只是一个对象，构造函数所创建的所有对象都会保持对原型的引用。这些对象甚至可以将 <code>prototype</code> 的属性当作自身属性来使用！</p>
+<p>JavaScript 利用对象与其原型之间的这个秘密链接来实现继承。请考虑以下原型链：</p>
+<p><img src="https://d17h27t6h515a5.cloudfront.net/topher/2017/December/5a31c70c_l3-64-prototype-chain-diagram/l3-64-prototype-chain-diagram.png" alt=""></p>
+<p><code>Cat()</code> 构造函数是使用 new 运算符来调用的，该运算符创建了 <code>bailey</code> 实例（对象）。请注意，meow() 方法是在 bailey 对象的构造函数的原型中定义的。原型只是一个对象，该构造函数所创建的所有对象均被秘密链接到该原型。因此，我们可以将 <code>bailey.meow()</code> 当作 bailey 自身的方法来执行！</p>
+<p>还记得吗，每个函数都有一个 <code>prototype</code> 属性，它其实只是一个对象。当使用 <code>new</code> 运算符将该函数作为构造函数来调用时，它会创建并返回一个新的对象。该对象被秘密地链接到其构造函数的 <code>prototype</code>，而这个秘密链接让该对象可以访问 <code>prototype</code> 的属性和方法，就像它自己的一样！</p>
+<p>由于我们知道 <code>prototype</code> 属性仅仅指向一个普通对象，因此这个对象本身也有一个秘密链接指向它的原型。而且，这个原型对象也有引用指向它自己的原型，以此类推。<strong>原型链</strong>就是这样形成的。</p>
+<p>1.首先，JavaScript 引擎将查看对象自身的属性。这意味着，直接在该对象中定义的任何属性和方法将2.优先于其他位置的任何同名属性和方法（类似于作用域链中的变量阴影）。<br>3.如果找不到目标属性，它将搜索对象的构造函数的原型，以寻找匹配。<br>4.如果原型中不存在该属性，则 JavaScript 引擎将沿着该链继续查找。<br>该链的最顶端是 Object() 对象，也就是顶级父对象。如果仍然找不到该属性，则该属性为未定义。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/05/移动端h5首屏秒开方案/" rel="next" title="移动端h5首屏秒开方案">
+                <i class="fa fa-chevron-left"></i> 移动端h5首屏秒开方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/16/shadow dom/" rel="prev" title="shadow dom">
+                shadow dom <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://www.saifurrahman.com/wp-content/uploads/2016/04/HelloWorld.jpg"
+                alt="Jason chong" />
+            
+              <p class="site-author-name" itemprop="name">Jason chong</p>
+              <p class="site-description motion-element" itemprop="description">一些平时记录收录的笔记或者原创</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#gulp-eslint"><span class="nav-number">1.</span> <span class="nav-text">gulp-eslint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Usage"><span class="nav-number">2.</span> <span class="nav-text">Usage</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JavaScript-使用函数作用域"><span class="nav-number"></span> <span class="nav-text">JavaScript 使用函数作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#块作用域"><span class="nav-number">1.</span> <span class="nav-text">块作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#作用域链"><span class="nav-number">2.</span> <span class="nav-text">作用域链</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变量阴影"><span class="nav-number">3.</span> <span class="nav-text">变量阴影</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闭包"><span class="nav-number"></span> <span class="nav-text">闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数保留其作用域"><span class="nav-number">1.</span> <span class="nav-text">函数保留其作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建一个闭包"><span class="nav-number">2.</span> <span class="nav-text">创建一个闭包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#闭包和作用域"><span class="nav-number">3.</span> <span class="nav-text">闭包和作用域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原型继承"><span class="nav-number"></span> <span class="nav-text">原型继承</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason chong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

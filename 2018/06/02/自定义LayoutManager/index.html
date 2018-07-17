@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述流式布局Item宽度不一，不知不觉给自己挖了个大坑，造成拓展一些功能难度倍增，观之网上的DEMO，99%Item的大小都是一样的，so，这个系列的下一篇我计划 实现一个Item大小一样 的酷炫LayoutManager ###自定义LayoutManager的步骤：以本文的流式布局为例，需求是一个垂直滚动的布局，子View以流式排列。先总结一下步骤：  一 实现 generateDefault">
+<meta name="keywords" content="code article social">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义LayoutManager分析">
+<meta property="og:url" content="http://yoursite.com/2018/06/02/自定义LayoutManager/index.html">
+<meta property="og:site_name" content="Hello World">
+<meta property="og:description" content="概述流式布局Item宽度不一，不知不觉给自己挖了个大坑，造成拓展一些功能难度倍增，观之网上的DEMO，99%Item的大小都是一样的，so，这个系列的下一篇我计划 实现一个Item大小一样 的酷炫LayoutManager ###自定义LayoutManager的步骤：以本文的流式布局为例，需求是一个垂直滚动的布局，子View以流式排列。先总结一下步骤：  一 实现 generateDefault">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://img-blog.csdn.net/20161028151945346">
+<meta property="og:updated_time" content="2018-06-02T12:53:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义LayoutManager分析">
+<meta name="twitter:description" content="概述流式布局Item宽度不一，不知不觉给自己挖了个大坑，造成拓展一些功能难度倍增，观之网上的DEMO，99%Item的大小都是一样的，so，这个系列的下一篇我计划 实现一个Item大小一样 的酷炫LayoutManager ###自定义LayoutManager的步骤：以本文的流式布局为例，需求是一个垂直滚动的布局，子View以流式排列。先总结一下步骤：  一 实现 generateDefault">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20161028151945346">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/02/自定义LayoutManager/"/>
+
+
+
+
+
+  <title>自定义LayoutManager分析 | Hello World</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hello World</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/02/自定义LayoutManager/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Jason chong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://www.saifurrahman.com/wp-content/uploads/2016/04/HelloWorld.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hello World">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">自定义LayoutManager分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-06-02T20:53:37+08:00">
+                2018-06-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p><img src="https://img-blog.csdn.net/20161028151945346" alt=""><br>流式布局Item宽度不一，不知不觉给自己挖了个大坑，造成拓展一些功能难度倍增，观之网上的DEMO，99%Item的大小都是一样的，so，这个系列的下一篇我计划 实现一个Item大小一样 的酷炫LayoutManager</p>
+<p>###自定义LayoutManager的步骤：<br>以本文的流式布局为例，需求是一个垂直滚动的布局，子View以流式排列。先总结一下步骤：</p>
+<blockquote>
+<p>一 实现 generateDefaultLayoutParams()<br>二 实现 onLayoutChildren()<br>三 竖直滚动需要 重写canScrollVertically()和scrollVerticallyBy()</p>
+</blockquote>
+<h3 id="二-实现generateDefaultLayoutParams"><a href="#二-实现generateDefaultLayoutParams" class="headerlink" title="二 实现generateDefaultLayoutParams()"></a>二 实现generateDefaultLayoutParams()</h3><p>如果没有特殊需求，大部分情况下，我们只需要如下重写该方法即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">  <span class="keyword">public</span> RecyclerView.<span class="function">LayoutParams <span class="title">generateDefaultLayoutParams</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">new</span> RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p><code>RecyclerView.LayoutParams</code>是继承自<code>android.view.ViewGroup.MarginLayoutParams</code>的，所以可以方便的使用各种margin。</p>
+<p>这个方法最终会在<code>recycler.getViewForPosition(i)</code>时调用到，在该方法浩长源码的最下方：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();</span><br><span class="line"><span class="keyword">final</span> LayoutParams rvLayoutParams;</span><br><span class="line"><span class="keyword">if</span> (lp == <span class="keyword">null</span>) &#123;</span><br><span class="line"><span class="comment">//这里会调用mLayout.generateDefaultLayoutParams()为每个ItemView设置LayoutParams</span></span><br><span class="line">    rvLayoutParams = (LayoutParams) generateDefaultLayoutParams();</span><br><span class="line">    holder.itemView.setLayoutParams(rvLayoutParams);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (!checkLayoutParams(lp)) &#123;</span><br><span class="line">    rvLayoutParams = (LayoutParams) generateLayoutParams(lp);</span><br><span class="line">    holder.itemView.setLayoutParams(rvLayoutParams);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    rvLayoutParams = (LayoutParams) lp;</span><br><span class="line">&#125;</span><br><span class="line">rvLayoutParams.mViewHolder = holder;</span><br><span class="line">rvLayoutParams.mPendingInvalidate = fromScrap &amp;&amp; bound;</span><br><span class="line"><span class="keyword">return</span> holder.itemView;</span><br></pre></td></tr></table></figure>
+<p>重写完这个方法就能编译通过了，只不过然并卵，界面上是一片空白，下面我们就走进<code>onLayoutChildren()</code>方法 ，为界面添加Item。</p>
+<p>注：99%用不到的情况：如果需要存储一些额外的东西在LayoutParams里，这里返回你自定义的LayoutParams即可。<br>当然，你自定义的<code>LayoutParams</code>需要继承自<code>RecyclerView.LayoutParams</code>。</p>
+<h3 id="三-onLayoutChildren"><a href="#三-onLayoutChildren" class="headerlink" title="三 onLayoutChildren()"></a>三 onLayoutChildren()</h3><blockquote>
+<p>该方法是LayoutManager的入口。它会在如下情况下被调用：<br>1 在RecyclerView初始化时，会被调用两次。<br>2 在调用adapter.notifyDataSetChanged()时，会被调用。<br>3 在调用setAdapter替换Adapter时,会被调用。<br>4 在RecyclerView执行动画时，它也会被调用。<br>即RecyclerView 初始化 、 数据源改变时 都会被调用。 </p>
+</blockquote>
+<p>相当于ViewGroup的onLayout()方法，所以我们需要在里面layout当前屏幕可见的所有子View，<strong>千万不要layout出所有的子View</strong>。本文如下编写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> mVerticalOffset;<span class="comment">//竖直偏移量 每次换行时，要根据这个offset判断</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mFirstVisiPos;<span class="comment">//屏幕可见的第一个View的Position</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mLastVisiPos;<span class="comment">//屏幕可见的最后一个View的Position</span></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onLayoutChildren</span><span class="params">(RecyclerView.Recycler recycler, RecyclerView.State state)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (getItemCount() == <span class="number">0</span>) &#123;<span class="comment">//没有Item，界面空着吧</span></span><br><span class="line">            detachAndScrapAttachedViews(recycler);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (getChildCount() == <span class="number">0</span> &amp;&amp; state.isPreLayout()) &#123;<span class="comment">//state.isPreLayout()是支持动画的</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//onLayoutChildren方法在RecyclerView 初始化时 会执行两遍</span></span><br><span class="line">        detachAndScrapAttachedViews(recycler);</span><br><span class="line">        <span class="comment">//初始化</span></span><br><span class="line">        mVerticalOffset = <span class="number">0</span>;</span><br><span class="line">        mFirstVisiPos = <span class="number">0</span>;</span><br><span class="line">        mLastVisiPos = getItemCount();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化时调用 填充childView</span></span><br><span class="line">        fill(recycler, state);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这个<code>fill(recycler, state)</code>;方法将是你自定义LayoutManager之旅一生的敌人，简单的说它承担了以下任务：<br>在考虑滑动位移的情况下：<br>1 回收所有屏幕不可见的子View<br>2 layout所有可见的子View</p>
+<p>在这一节，我们先看一下它的简单版本，不考虑滑动位移，不考虑滑动方向等，只考虑初始化时，从头至尾，layout所有可见的子View，在下一节我会配合滑动事件放出它的完整版.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> topOffset = getPaddingTop();<span class="comment">//布局时的上偏移</span></span><br><span class="line">   <span class="keyword">int</span> leftOffset = getPaddingLeft();<span class="comment">//布局时的左偏移</span></span><br><span class="line">   <span class="keyword">int</span> lineMaxHeight = <span class="number">0</span>;<span class="comment">//每一行最大的高度</span></span><br><span class="line">   <span class="keyword">int</span> minPos = mFirstVisiPos;<span class="comment">//初始化时，我们不清楚究竟要layout多少个子View，所以就假设从0~itemcount-1</span></span><br><span class="line">   mLastVisiPos = getItemCount() - <span class="number">1</span>;</span><br><span class="line">   <span class="comment">//顺序addChildView</span></span><br><span class="line">   <span class="keyword">for</span> (<span class="keyword">int</span> i = minPos; i &lt;= mLastVisiPos; i++) &#123;</span><br><span class="line">       <span class="comment">//找recycler要一个childItemView,我们不管它是从scrap里取，还是从RecyclerViewPool里取，亦或是onCreateViewHolder里拿。</span></span><br><span class="line">       View child = recycler.getViewForPosition(i);</span><br><span class="line">       addView(child);</span><br><span class="line">       measureChildWithMargins(child, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">       <span class="comment">//计算宽度 包括margin</span></span><br><span class="line">       <span class="keyword">if</span> (leftOffset + getDecoratedMeasurementHorizontal(child) &lt;= getHorizontalSpace()) &#123;<span class="comment">//当前行还排列的下</span></span><br><span class="line">           layoutDecoratedWithMargins(child, leftOffset, topOffset, leftOffset + getDecoratedMeasurementHorizontal(child), topOffset + getDecoratedMeasurementVertical(child));</span><br><span class="line"></span><br><span class="line">           <span class="comment">//改变 left  lineHeight</span></span><br><span class="line">           leftOffset += getDecoratedMeasurementHorizontal(child);</span><br><span class="line">           lineMaxHeight = Math.max(lineMaxHeight, getDecoratedMeasurementVertical(child));</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;<span class="comment">//当前行排列不下</span></span><br><span class="line">           <span class="comment">//改变top  left  lineHeight</span></span><br><span class="line">           leftOffset = getPaddingLeft();</span><br><span class="line">           topOffset += lineMaxHeight;</span><br><span class="line">           lineMaxHeight = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">           <span class="comment">//新起一行的时候要判断一下边界</span></span><br><span class="line">           <span class="keyword">if</span> (topOffset - dy &gt; getHeight() - getPaddingBottom()) &#123;</span><br><span class="line">               <span class="comment">//越界了 就回收</span></span><br><span class="line">               removeAndRecycleView(child, recycler);</span><br><span class="line">               mLastVisiPos = i - <span class="number">1</span>;</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               layoutDecoratedWithMargins(child, leftOffset, topOffset, leftOffset + getDecoratedMeasurementHorizontal(child), topOffset + getDecoratedMeasurementVertical(child));</span><br><span class="line"></span><br><span class="line">               <span class="comment">//改变 left  lineHeight</span></span><br><span class="line">               leftOffset += getDecoratedMeasurementHorizontal(child);</span><br><span class="line">               lineMaxHeight = Math.max(lineMaxHeight, getDecoratedMeasurementVertical(child));</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>用到的一些工具函数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//模仿LLM Horizontal 源码</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取某个childView在水平方向所占的空间</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> view</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getDecoratedMeasurementHorizontal</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)</span><br><span class="line">            view.getLayoutParams();</span><br><span class="line">    <span class="keyword">return</span> getDecoratedMeasuredWidth(view) + params.leftMargin</span><br><span class="line">            + params.rightMargin;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取某个childView在竖直方向所占的空间</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> view</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getDecoratedMeasurementVertical</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)</span><br><span class="line">            view.getLayoutParams();</span><br><span class="line">    <span class="keyword">return</span> getDecoratedMeasuredHeight(view) + params.topMargin</span><br><span class="line">            + params.bottomMargin;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getVerticalSpace</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> getHeight() - getPaddingTop() - getPaddingBottom();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getHorizontalSpace</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> getWidth() - getPaddingLeft() - getPaddingRight();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上编写一个超级简单的<code>fill()</code>方法，运行，你的程序应该就能看到流式布局的效果出现了。<br>可是千万别开心，因为痛苦的计算远没到来</p>
+<p>此时虽然界面上已经展示了流式布局的效果，可是它并不能滑动，下一节我们让它动起来。</p>
+<h3 id="四，动起来"><a href="#四，动起来" class="headerlink" title="四，动起来"></a>四，动起来</h3><p>想让我们自定义的LayoutManager动起来，最简单的写法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">canScrollVertically</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">scrollVerticallyBy</span><span class="params">(<span class="keyword">int</span> dy, RecyclerView.Recycler recycler, RecyclerView.State state)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">int</span> realOffset = dy;<span class="comment">//实际滑动的距离， 可能会在边界处被修复</span></span><br><span class="line"></span><br><span class="line">       offsetChildrenVertical(-realOffset);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> realOffset;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p><code>offsetChildrenVertical(-realOffset)</code>;这句话移动所有的childView. </p>
+<p>返回值会被RecyclerView用来判断是否达到边界， 如果返回值！=传入的dy，则会有一个边缘的发光效果，表示到达了边界。而且返回值还会被RecyclerView用于计算fling效果。</p>
+<p>写完编译，哇塞，真的跟随手指滑动了，只不过能动的总共就我们在上一节layout的那些Item，Item并没有回收，也没有新的Item出现。</p>
+<p>好了，下面开始正经的写它吧，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">scrollVerticallyBy</span><span class="params">(<span class="keyword">int</span> dy, RecyclerView.Recycler recycler, RecyclerView.State state)</span> </span>&#123;</span><br><span class="line">       <span class="comment">//位移0、没有子View 当然不移动</span></span><br><span class="line">       <span class="keyword">if</span> (dy == <span class="number">0</span> || getChildCount() == <span class="number">0</span>) &#123;</span><br><span class="line">           <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">int</span> realOffset = dy;<span class="comment">//实际滑动的距离， 可能会在边界处被修复</span></span><br><span class="line">       <span class="comment">//边界修复代码</span></span><br><span class="line">       <span class="keyword">if</span> (mVerticalOffset + realOffset &lt; <span class="number">0</span>) &#123;<span class="comment">//上边界</span></span><br><span class="line">           realOffset = -mVerticalOffset;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (realOffset &gt; <span class="number">0</span>) &#123;<span class="comment">//下边界</span></span><br><span class="line">           <span class="comment">//利用最后一个子View比较修正</span></span><br><span class="line">           View lastChild = getChildAt(getChildCount() - <span class="number">1</span>);</span><br><span class="line">           <span class="keyword">if</span> (getPosition(lastChild) == getItemCount() - <span class="number">1</span>) &#123;</span><br><span class="line">               <span class="keyword">int</span> gap = getHeight() - getPaddingBottom() - getDecoratedBottom(lastChild);</span><br><span class="line">               <span class="keyword">if</span> (gap &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                   realOffset = -gap;</span><br><span class="line">               &#125; <span class="keyword">else</span> <span class="keyword">if</span> (gap == <span class="number">0</span>) &#123;</span><br><span class="line">                   realOffset = <span class="number">0</span>;</span><br><span class="line">               &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                   realOffset = Math.min(realOffset, -gap);</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       realOffset = fill(recycler, state, realOffset);<span class="comment">//先填充，再位移。</span></span><br><span class="line"></span><br><span class="line">       mVerticalOffset += realOffset;<span class="comment">//累加实际滑动距离</span></span><br><span class="line"></span><br><span class="line">       offsetChildrenVertical(-realOffset);<span class="comment">//滑动</span></span><br><span class="line"></span><br><span class="line">       <span class="keyword">return</span> realOffset;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>这里用<code>realOffset</code>变量保存实际的位移，也是return 回去的值。大部分情况下它=dy。<br>在边界处，为了防止越界，做了一些处理，realOffset 可能不等于dy。<br>和别的文章不同的是，我参考了LinearLayoutManager的源码，先考虑滑动位移进行View的回收、填充(fill（）函数)，然后再真正的位移这些子Item。</p>
+<p>在<code>fill（）</code>的过程中</p>
+<h3 id="流程："><a href="#流程：" class="headerlink" title="流程："></a>流程：</h3><blockquote>
+<p>一 会先考虑到dy，回收界面上不可见的Item。<br>二 填充布局子View<br>三 判断是否将dy都消费掉了，如果消费不掉：例如滑动距离太多，屏幕上的View已经填充完了，仍有空&gt;白，那么就要修正dy给realOffset。</p>
+</blockquote>
+<h3 id="注意事项一：考虑滑动的方向"><a href="#注意事项一：考虑滑动的方向" class="headerlink" title="注意事项一：考虑滑动的方向"></a>注意事项一：考虑滑动的方向</h3><p>在填充布局子View的时候，还要考虑滑动的方向，即填充的顺序，是从头至尾填充，还是从尾至头部填充。<br>如果是向底部滑动，那么是顺序填充，显示底端position更大的Item。( dy&gt;0）<br>如果是向顶部滑动，那么是逆序填充，显示顶端positon更小的Item。（dy&lt;0）</p>
+<h3 id="注意事项二：流式布局-逆序布局子View的问题"><a href="#注意事项二：流式布局-逆序布局子View的问题" class="headerlink" title="注意事项二：流式布局 逆序布局子View的问题"></a>注意事项二：流式布局 逆序布局子View的问题</h3><p>再啰嗦最后一点,我们想象一下这个逆序填充的过程：<br>正序过程可以自上而下，自左向右layout 子View，每次layout之前判断当前这一行宽度+子View宽度，是否超过父控件宽度，如果超过了就另起一行。<br>逆序时</p>
+<h3 id="利用Rect保存子View边界"><a href="#利用Rect保存子View边界" class="headerlink" title="利用Rect保存子View边界"></a>利用Rect保存子View边界</h3><p><strong>正序排列时，保存每个子View的Rect</strong>，<br><strong>逆序时，直接拿出来，layout</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> SparseArray&lt;Rect&gt; mItemRects;<span class="comment">//key 是View的position，保存View的bounds ，</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 填充childView的核心方法,应该先填充，再移动。</span></span><br><span class="line"><span class="comment">     * 在填充时，预先计算dy的在内，如果View越界，回收掉。</span></span><br><span class="line"><span class="comment">     * 一般情况是返回dy，如果出现View数量不足，则返回修正后的dy.</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> recycler</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> state</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> dy       RecyclerView给我们的位移量,+,显示底端， -，显示头部</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> 修正以后真正的dy（可能剩余空间不够移动那么多了 所以return &lt;|dy|）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">fill</span><span class="params">(RecyclerView.Recycler recycler, RecyclerView.State state, <span class="keyword">int</span> dy)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> topOffset = getPaddingTop();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//回收越界子View</span></span><br><span class="line">        <span class="keyword">if</span> (getChildCount() &gt; <span class="number">0</span>) &#123;<span class="comment">//滑动时进来的</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = getChildCount() - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">                View child = getChildAt(i);</span><br><span class="line">                <span class="keyword">if</span> (dy &gt; <span class="number">0</span>) &#123;<span class="comment">//需要回收当前屏幕，上越界的View</span></span><br><span class="line">                    <span class="keyword">if</span> (getDecoratedBottom(child) - dy &lt; topOffset) &#123;</span><br><span class="line">                        removeAndRecycleView(child, recycler);</span><br><span class="line">                        mFirstVisiPos++;</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> <span class="keyword">if</span> (dy &lt; <span class="number">0</span>) &#123;<span class="comment">//回收当前屏幕，下越界的View</span></span><br><span class="line">                    <span class="keyword">if</span> (getDecoratedTop(child) - dy &gt; getHeight() - getPaddingBottom()) &#123;</span><br><span class="line">                        removeAndRecycleView(child, recycler);</span><br><span class="line">                        mLastVisiPos--;</span><br><span class="line">                        <span class="keyword">continue</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//detachAndScrapAttachedViews(recycler);</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> leftOffset = getPaddingLeft();</span><br><span class="line">        <span class="keyword">int</span> lineMaxHeight = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//布局子View阶段</span></span><br><span class="line">        <span class="keyword">if</span> (dy &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> minPos = mFirstVisiPos;</span><br><span class="line">            mLastVisiPos = getItemCount() - <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (getChildCount() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                View lastView = getChildAt(getChildCount() - <span class="number">1</span>);</span><br><span class="line">                minPos = getPosition(lastView) + <span class="number">1</span>;<span class="comment">//从最后一个View+1开始吧</span></span><br><span class="line">                topOffset = getDecoratedTop(lastView);</span><br><span class="line">                leftOffset = getDecoratedRight(lastView);</span><br><span class="line">                lineMaxHeight = Math.max(lineMaxHeight, getDecoratedMeasurementVertical(lastView));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//顺序addChildView</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = minPos; i &lt;= mLastVisiPos; i++) &#123;</span><br><span class="line">                <span class="comment">//找recycler要一个childItemView,我们不管它是从scrap里取，还是从RecyclerViewPool里取，亦或是onCreateViewHolder里拿。</span></span><br><span class="line">                View child = recycler.getViewForPosition(i);</span><br><span class="line">                addView(child);</span><br><span class="line">                measureChildWithMargins(child, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">                <span class="comment">//计算宽度 包括margin</span></span><br><span class="line">                <span class="keyword">if</span> (leftOffset + getDecoratedMeasurementHorizontal(child) &lt;= getHorizontalSpace()) &#123;<span class="comment">//当前行还排列的下</span></span><br><span class="line">                    layoutDecoratedWithMargins(child, leftOffset, topOffset, leftOffset + getDecoratedMeasurementHorizontal(child), topOffset + getDecoratedMeasurementVertical(child));</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//保存Rect供逆序layout用</span></span><br><span class="line">                    Rect rect = <span class="keyword">new</span> Rect(leftOffset, topOffset + mVerticalOffset, leftOffset + getDecoratedMeasurementHorizontal(child), topOffset + getDecoratedMeasurementVertical(child) + mVerticalOffset);</span><br><span class="line">                    mItemRects.put(i, rect);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//改变 left  lineHeight</span></span><br><span class="line">                    leftOffset += getDecoratedMeasurementHorizontal(child);</span><br><span class="line">                    lineMaxHeight = Math.max(lineMaxHeight, getDecoratedMeasurementVertical(child));</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;<span class="comment">//当前行排列不下</span></span><br><span class="line">                    <span class="comment">//改变top  left  lineHeight</span></span><br><span class="line">                    leftOffset = getPaddingLeft();</span><br><span class="line">                    topOffset += lineMaxHeight;</span><br><span class="line">                    lineMaxHeight = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">//新起一行的时候要判断一下边界</span></span><br><span class="line">                    <span class="keyword">if</span> (topOffset - dy &gt; getHeight() - getPaddingBottom()) &#123;</span><br><span class="line">                        <span class="comment">//越界了 就回收</span></span><br><span class="line">                        removeAndRecycleView(child, recycler);</span><br><span class="line">                        mLastVisiPos = i - <span class="number">1</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        layoutDecoratedWithMargins(child, leftOffset, topOffset, leftOffset + getDecoratedMeasurementHorizontal(child), topOffset + getDecoratedMeasurementVertical(child));</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//保存Rect供逆序layout用</span></span><br><span class="line">                        Rect rect = <span class="keyword">new</span> Rect(leftOffset, topOffset + mVerticalOffset, leftOffset + getDecoratedMeasurementHorizontal(child), topOffset + getDecoratedMeasurementVertical(child) + mVerticalOffset);</span><br><span class="line">                        mItemRects.put(i, rect);</span><br><span class="line"></span><br><span class="line">                        <span class="comment">//改变 left  lineHeight</span></span><br><span class="line">                        leftOffset += getDecoratedMeasurementHorizontal(child);</span><br><span class="line">                        lineMaxHeight = Math.max(lineMaxHeight, getDecoratedMeasurementVertical(child));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//添加完后，判断是否已经没有更多的ItemView，并且此时屏幕仍有空白，则需要修正dy</span></span><br><span class="line">            View lastChild = getChildAt(getChildCount() - <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">if</span> (getPosition(lastChild) == getItemCount() - <span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">int</span> gap = getHeight() - getPaddingBottom() - getDecoratedBottom(lastChild);</span><br><span class="line">                <span class="keyword">if</span> (gap &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    dy -= gap;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">/**</span></span><br><span class="line"><span class="comment">             * ##  利用Rect保存子View边界</span></span><br><span class="line"><span class="comment">             正序排列时，保存每个子View的Rect，逆序时，直接拿出来layout。</span></span><br><span class="line"><span class="comment">             */</span></span><br><span class="line">            <span class="keyword">int</span> maxPos = getItemCount() - <span class="number">1</span>;</span><br><span class="line">            mFirstVisiPos = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">if</span> (getChildCount() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                View firstView = getChildAt(<span class="number">0</span>);</span><br><span class="line">                maxPos = getPosition(firstView) - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = maxPos; i &gt;= mFirstVisiPos; i--) &#123;</span><br><span class="line">                Rect rect = mItemRects.get(i);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> (rect.bottom - mVerticalOffset - dy &lt; getPaddingTop()) &#123;</span><br><span class="line">                    mFirstVisiPos = i + <span class="number">1</span>;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    View child = recycler.getViewForPosition(i);</span><br><span class="line">                    addView(child, <span class="number">0</span>);<span class="comment">//将View添加至RecyclerView中，childIndex为1，但是View的位置还是由layout的位置决定</span></span><br><span class="line">                    measureChildWithMargins(child, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">                    layoutDecoratedWithMargins(child, rect.left, rect.top - mVerticalOffset, rect.right, rect.bottom - mVerticalOffset);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        Log.d(<span class="string">"TAG"</span>, <span class="string">"count= ["</span> + getChildCount() + <span class="string">"]"</span> + <span class="string">",[recycler.getScrapList().size():"</span> + recycler.getScrapList().size() + <span class="string">", dy:"</span> + dy + <span class="string">",  mVerticalOffset"</span> + mVerticalOffset+<span class="string">", "</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dy;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>思路已经在前面讲解过，代码里也配上了注释，计算坐标等都是数学问题，略饶人，需要用笔在纸上写一写，或者运行调试调试。没啥好办法。<br>值得一提的是，可以通过<code>getChildCount()</code>和<code>recycler.getScrapList().size()</code> 查看当前屏幕上的Item数量 和 scrapCache缓存区域的Item数量，合格的LayoutManager，childCount数量不应大于屏幕上显示的Item数量，而scrapCache缓存区域的Item数量应该是0.<br><strong>官方的LayoutManager都是达标的</strong>，本例也是达标的，网上大部分文章的Demo，都是不合格的。。 </p>
+<h3 id="五-适配notifyDataSetChanged"><a href="#五-适配notifyDataSetChanged" class="headerlink" title="五 适配notifyDataSetChanged()"></a>五 适配notifyDataSetChanged()</h3><p>此时会回调onLayoutChildren()函数。因为我们流式布局的特殊性，每个Item的宽度不一致，所以化简处理，每次这里归零。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//初始化区域</span></span><br><span class="line">       mVerticalOffset = <span class="number">0</span>;</span><br><span class="line">       mFirstVisiPos = <span class="number">0</span>;</span><br><span class="line">       mLastVisiPos = getItemCount();</span><br></pre></td></tr></table></figure>
+<p>如果每个Item的大小都一样，逆序顺序layoutChild都比较好处理，则应该在此判断，getChildCount(),大于0说明是DatasetChanged()操作，（初始化的第二次也会childCount&gt;0）。根据当前记录的position和位移信息去fill视图即可。</p>
+<h3 id="七-总结："><a href="#七-总结：" class="headerlink" title="七 总结："></a>七 总结：</h3><blockquote>
+<p>They are also extremely complex, and hard to get right. For every amount of &gt;effort RecyclerView requires of you, it is doing 10x more behind the scenes.</p>
+</blockquote>
+<p>有些需要完善的细节非常复杂，需要经过多次试验才能得到正确的结果（这里我更加敬佩Google提供的三个LM）。每一个我们想要实现的需求，可能要花费比我们想象的时间*10倍的时间。<br>上篇也提及到的，不要过度优化，达成需求就好</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/28/TCP:ip详解-传输层UDP协议/" rel="next" title="UDP协议">
+                <i class="fa fa-chevron-left"></i> UDP协议
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/05/ReactNative布局基础/" rel="prev" title="ReactNative布局基础">
+                ReactNative布局基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://www.saifurrahman.com/wp-content/uploads/2016/04/HelloWorld.jpg"
+                alt="Jason chong" />
+            
+              <p class="site-author-name" itemprop="name">Jason chong</p>
+              <p class="site-description motion-element" itemprop="description">一些平时记录收录的笔记或者原创</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二-实现generateDefaultLayoutParams"><span class="nav-number">1.1.</span> <span class="nav-text">二 实现generateDefaultLayoutParams()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三-onLayoutChildren"><span class="nav-number">1.2.</span> <span class="nav-text">三 onLayoutChildren()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四，动起来"><span class="nav-number">1.3.</span> <span class="nav-text">四，动起来</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流程："><span class="nav-number">1.4.</span> <span class="nav-text">流程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意事项一：考虑滑动的方向"><span class="nav-number">1.5.</span> <span class="nav-text">注意事项一：考虑滑动的方向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#注意事项二：流式布局-逆序布局子View的问题"><span class="nav-number">1.6.</span> <span class="nav-text">注意事项二：流式布局 逆序布局子View的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用Rect保存子View边界"><span class="nav-number">1.7.</span> <span class="nav-text">利用Rect保存子View边界</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五-适配notifyDataSetChanged"><span class="nav-number">1.8.</span> <span class="nav-text">五 适配notifyDataSetChanged()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#七-总结："><span class="nav-number">1.9.</span> <span class="nav-text">七 总结：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jason chong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
